@@ -60,6 +60,7 @@ class GroundTruth(BaseModel):
     expected_confidence: str
 
     required_evidence: list[str]
+    required_evidence_event_ids: list[str] =  Field(default_factory=list)
     forbidden_conclusions: list[str]
 
     expected_next_step: str

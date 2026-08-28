@@ -1,20 +1,101 @@
-from pathlib import Path
-
-from baseline.investigator import investigate
-from evaluation.loader import load_case
+from sentinelx.models import InvestigationCase, InvestigationResult
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SUSPICIOUS_ACTIONS = {
+    "failed_login",
+    "account_locked",
+    "privilege_escalation",
+    "process_execution",
+    "suspicious_process",
+    "malware_detected",
+    "lateral_movement",
+    "scheduled_task_created",
+    "credential_use",
+}
 
 
-def test_baseline_c01_is_benign():
-    case = load_case(
-        PROJECT_ROOT / "data" / "cases" / "C01.json"
+SUSPICIOUS_PROCESS_TERMS = {
+    "powershell",
+    "cmd.exe",
+    "wscript",
+    "cscript",
+    "rundll32",
+    "mshta",
+}
+
+
+def investigate(case: InvestigationCase) -> InvestigationResult:
+    """
+    Baseline security investigator.
+
+    The baseline evaluates individual events using simple heuristics.
+    It intentionally does not perform sophisticated cross-event correlation.
+    """
+
+    suspicious_events = []
+
+    for event in case.events:
+        action = event.action.lower()
+
+        process_name = (event.process_name or "").lower()
+        command_line = (event.command_line or "").lower()
+
+        suspicious = (
+            event.severity.value in {"high", "critical"}
+            or action in SUSPICIOUS_ACTIONS
+            or any(
+                term in process_name
+                for term in SUSPICIOUS_PROCESS_TERMS
+            )
+            or any(
+                term in command_line
+                for term in SUSPICIOUS_PROCESS_TERMS
+            )
+        )
+
+        if suspicious:
+            suspicious_events.append(event)
+
+    if not suspicious_events:
+        return InvestigationResult(
+            case_id=case.case_id,
+            outcome="benign",
+            category="benign_activity",
+            confidence="high",
+            evidence_event_ids=[
+                event.event_id for event in case.events
+            ],
+            reasoning=(
+                "No individual event contained a strong suspicious "
+                "indicator. The available telemetry is consistent "
+                "with routine activity."
+            ),
+            next_step="Continue normal monitoring.",
+        )
+
+    evidence_ids = [
+        event.event_id for event in suspicious_events
+    ]
+
+    confidence = (
+        "medium"
+        if len(suspicious_events) == 1
+        else "high"
     )
 
-    result = investigate(case)
-
-    assert result.case_id == "C01"
-    assert result.outcome == "benign"
-    assert result.confidence == "high"
-    assert "EVT-001" in result.evidence_event_ids
+    return InvestigationResult(
+        case_id=case.case_id,
+        outcome="suspicious",
+        category="suspicious_activity",
+        confidence=confidence,
+        evidence_event_ids=evidence_ids,
+        reasoning=(
+            f"The case contains {len(suspicious_events)} event(s) "
+            "with individually suspicious characteristics. "
+            "Additional investigation is recommended."
+        ),
+        next_step=(
+            "Investigate the identified events and gather "
+            "additional evidence."
+        ),
+    )

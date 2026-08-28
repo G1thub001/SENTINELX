@@ -1,0 +1,41 @@
+{
+  "case_id": "C01",
+  "expected_outcome": "benign",
+  "expected_category": "benign_authentication",
+  "expected_confidence": "high",
+
+  "scenario": "Normal employee authentication from a known workstation during normal working hours.",
+
+  "required_evidence": [
+    "Successful authentication belongs to a known employee account.",
+    "Source device is a known workstation assigned to the employee.",
+    "Source network location is consistent with the employee's normal environment.",
+    "Authentication occurs during normal working hours.",
+    "No accompanying suspicious authentication, process, network, or privilege events are present."
+  ],
+
+  "required_evidence_event_ids": [
+    "EVT-001"
+],  
+
+  "supporting_events": [
+    "EVT-001"
+  ],
+
+  "forbidden_conclusions": [
+    "Do not classify the authentication as an incident without additional evidence.",
+    "Do not infer account compromise from successful authentication alone.",
+    "Do not claim malicious activity without supporting evidence."
+  ],
+
+  "expected_next_step": "No incident escalation is required. Continue normal monitoring.",
+
+  "failure_mode": "over_alerting",
+
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the case as benign.",
+    "evidence_requirement": "The system should identify the normal authentication context as supporting evidence.",
+    "uncertainty_requirement": "High confidence is appropriate because the available evidence is internally consistent.",
+    "unsupported_claim_penalty": "A claim of compromise or malicious activity without supporting evidence should be penalized."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "C01",
+  "description": "Normal employee authentication from a known workstation during normal working hours.",
+  "events": [
+    {
+      "event_id": "EVT-001",
+      "timestamp": "2026-08-28T09:02:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "workstation-17",
+      "user": "alice",
+      "source_ip": "10.20.15.42",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "low",
+      "details": {
+        "device_known": true,
+        "normal_working_hours": true,
+        "location_known": true
+      }
+    }
+  ]
+}
