@@ -1,0 +1,34 @@
+{
+  "case_id": "C02",
+  "expected_outcome": "benign",
+  "expected_category": "authorized_administrative_activity",
+  "expected_confidence": "high",
+  "scenario": "Authorized administrative maintenance performed during a scheduled maintenance window.",
+  "required_evidence": [
+    "PowerShell execution occurred on a known server.",
+    "The activity occurred during an authorized maintenance window.",
+    "The activity is associated with an approved change ticket.",
+    "The administrative account is authorized to perform the maintenance.",
+    "The service restart is consistent with the approved maintenance activity."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-002",
+    "EVT-003"
+  ],
+  "supporting_events": [
+    "EVT-002",
+    "EVT-003"
+  ],
+  "forbidden_conclusions": [
+    "Do not classify authorized maintenance as malicious solely because PowerShell was used.",
+    "Do not infer privilege abuse from administrative activity supported by an approved change ticket."
+  ],
+  "expected_next_step": "No incident escalation is required. Record the activity as authorized maintenance.",
+  "failure_mode": "misreading privileged activity",
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the case as benign.",
+    "evidence_requirement": "The system should identify the maintenance window and approved change activity.",
+    "uncertainty_requirement": "High confidence is appropriate because the telemetry contains consistent authorization context.",
+    "unsupported_claim_penalty": "Claims of malicious PowerShell or privilege abuse without contradicting evidence should be penalized."
+  }
+}
