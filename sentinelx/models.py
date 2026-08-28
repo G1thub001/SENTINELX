@@ -1,5 +1,6 @@
 from datetime import datetime
 from enum import Enum
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -23,22 +24,56 @@ class SecurityEvent(BaseModel):
     event_id: str
     timestamp: datetime
     event_type: EventType
+
     source: str
+    host: str | None = None
+
     user: str | None = None
+
     source_ip: str | None = None
     destination_ip: str | None = None
+    destination_domain: str | None = None
+
     process_name: str | None = None
+    parent_process: str | None = None
+    command_line: str | None = None
+
     action: str
+    status: str | None = None
+    authentication_method: str | None = None
+
     severity: Severity
-    details: dict[str, str] = Field(default_factory=dict)
+    details: dict[str, Any] = Field(default_factory=dict)
 
 
-class IncidentCase(BaseModel):
+class InvestigationCase(BaseModel):
     case_id: str
     description: str
     events: list[SecurityEvent]
 
-    expected_incident: bool
+
+class GroundTruth(BaseModel):
+    case_id: str
+
+    expected_outcome: str
     expected_category: str
-    key_evidence: list[str]
     expected_confidence: str
+
+    required_evidence: list[str]
+    forbidden_conclusions: list[str]
+
+    expected_next_step: str
+
+    failure_mode: str
+
+class InvestigationResult(BaseModel):
+    case_id: str
+
+    outcome: str
+    category: str
+    confidence: str
+
+    evidence_event_ids: list[str]
+    reasoning: str
+
+    next_step: str
