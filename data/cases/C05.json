@@ -1,0 +1,25 @@
+{
+  "case_id": "C05",
+  "description": "Suspicious process execution is observed on an endpoint, but the available telemetry does not provide sufficient context to confirm malicious activity.",
+  "events": [
+    {
+      "event_id": "EVT-010",
+      "timestamp": "2026-08-28T11:22:00Z",
+      "event_type": "process",
+      "source": "endpoint-agent",
+      "host": "workstation-31",
+      "user": "charlie",
+      "process_name": "powershell.exe",
+      "parent_process": "explorer.exe",
+      "command_line": "powershell.exe -File C:\\Users\\charlie\\Downloads\\update.ps1",
+      "action": "process_execution",
+      "status": "success",
+      "severity": "medium",
+      "details": {
+        "file_signed": null,
+        "parent_known": true,
+        "user_known": true
+      }
+    }
+  ]
+}

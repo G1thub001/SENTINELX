@@ -1,0 +1,33 @@
+{
+  "case_id": "C05",
+  "expected_outcome": "suspicious",
+  "expected_category": "suspicious_process_execution",
+  "expected_confidence": "medium",
+  "scenario": "Suspicious PowerShell execution is observed, but the available telemetry is insufficient to confirm malicious activity.",
+  "required_evidence": [
+    "PowerShell execution is observed.",
+    "The process executes a script from a user Downloads directory.",
+    "The executing user and endpoint are known.",
+    "No corroborating network, endpoint, persistence, or privilege evidence is available.",
+    "The available telemetry is insufficient to confirm malicious activity."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-010"
+  ],
+  "supporting_events": [
+    "EVT-010"
+  ],
+  "forbidden_conclusions": [
+    "Do not confirm malware solely because PowerShell was used.",
+    "Do not claim compromise without corroborating evidence.",
+    "Do not infer persistence or privilege escalation without supporting telemetry."
+  ],
+  "expected_next_step": "investigate",
+  "failure_mode": "insufficient-context reasoning",
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the activity as suspicious rather than confirmed malicious activity.",
+    "evidence_requirement": "The system should identify the PowerShell execution and its available process context.",
+    "uncertainty_requirement": "Medium confidence is appropriate because the activity is suspicious but corroborating evidence is absent.",
+    "unsupported_claim_penalty": "Definitive malware or compromise claims without corroborating telemetry should be penalized."
+  }
+}

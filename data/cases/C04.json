@@ -1,0 +1,58 @@
+{
+  "case_id": "C04",
+  "description": "Repeated authentication anomalies involving the same account, without sufficient evidence to confirm compromise.",
+  "events": [
+    {
+      "event_id": "EVT-007",
+      "timestamp": "2026-08-28T10:11:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "workstation-22",
+      "user": "bob",
+      "source_ip": "10.20.18.55",
+      "action": "failed_login",
+      "status": "failure",
+      "authentication_method": "password",
+      "severity": "medium",
+      "details": {
+        "failure_reason": "invalid_password",
+        "device_known": true
+      }
+    },
+    {
+      "event_id": "EVT-008",
+      "timestamp": "2026-08-28T10:12:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "workstation-22",
+      "user": "bob",
+      "source_ip": "10.20.18.55",
+      "action": "failed_login",
+      "status": "failure",
+      "authentication_method": "password",
+      "severity": "medium",
+      "details": {
+        "failure_reason": "invalid_password",
+        "device_known": true
+      }
+    },
+    {
+      "event_id": "EVT-009",
+      "timestamp": "2026-08-28T10:13:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "workstation-22",
+      "user": "bob",
+      "source_ip": "10.20.18.55",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "medium",
+      "details": {
+        "device_known": true,
+        "location_known": true,
+        "normal_working_hours": true
+      }
+    }
+  ]
+}

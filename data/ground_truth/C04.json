@@ -1,0 +1,37 @@
+{
+  "case_id": "C04",
+  "expected_outcome": "suspicious",
+  "expected_category": "authentication_anomaly",
+  "expected_confidence": "medium",
+  "scenario": "Repeated authentication failures followed by a successful login from a known workstation, without sufficient evidence to confirm account compromise.",
+  "required_evidence": [
+    "Multiple failed authentication attempts occur within a short period.",
+    "The failed attempts target the same employee account.",
+    "A successful authentication follows the failed attempts.",
+    "The authentication originates from a known workstation.",
+    "No additional endpoint, process, network, or privilege evidence confirms compromise."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-007",
+    "EVT-008",
+    "EVT-009"
+  ],
+  "supporting_events": [
+    "EVT-007",
+    "EVT-008",
+    "EVT-009"
+  ],
+  "forbidden_conclusions": [
+    "Do not confirm account compromise solely from repeated authentication failures.",
+    "Do not claim credential theft without supporting evidence.",
+    "Do not treat the successful login as proof of malicious access."
+  ],
+  "expected_next_step": "investigate",
+  "failure_mode": "premature incident confirmation",
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the activity as suspicious rather than a confirmed incident.",
+    "evidence_requirement": "The system should identify the repeated authentication anomalies and the subsequent successful login.",
+    "uncertainty_requirement": "Medium confidence is appropriate because the authentication pattern is concerning but insufficient to establish compromise.",
+    "unsupported_claim_penalty": "A definitive compromise claim without endpoint or network evidence should be penalized."
+  }
+}
