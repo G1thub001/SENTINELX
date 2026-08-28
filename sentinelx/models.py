@@ -19,6 +19,27 @@ class EventType(str, Enum):
     ENDPOINT = "endpoint"
     PRIVILEGE = "privilege"
 
+class Outcome(str, Enum):
+    BENIGN = "benign"
+    SUSPICIOUS = "suspicious"
+    CONFIRMED_INCIDENT = "confirmed_incident"
+    INSUFFICIENT_EVIDENCE = "insufficient_evidence"
+
+
+class Confidence(str, Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+
+class NextStep(str, Enum):
+    CONTINUE_MONITORING = "continue_monitoring"
+    INVESTIGATE = "investigate"
+    COLLECT_TELEMETRY = "collect_telemetry"
+    ESCALATE = "escalate"
+    CONTAIN = "contain"
+    REMEDIATE = "remediate"
+
 
 class SecurityEvent(BaseModel):
     event_id: str
@@ -55,26 +76,27 @@ class InvestigationCase(BaseModel):
 class GroundTruth(BaseModel):
     case_id: str
 
-    expected_outcome: str
+    expected_outcome: Outcome
     expected_category: str
-    expected_confidence: str
+    expected_confidence: Confidence
 
     required_evidence: list[str]
-    required_evidence_event_ids: list[str] =  Field(default_factory=list)
+    required_evidence_event_ids: list[str] = Field(default_factory=list)
+
     forbidden_conclusions: list[str]
 
-    expected_next_step: str
+    expected_next_step: NextStep
 
     failure_mode: str
 
 class InvestigationResult(BaseModel):
     case_id: str
 
-    outcome: str
+    outcome: Outcome
     category: str
-    confidence: str
+    confidence: Confidence
 
     evidence_event_ids: list[str]
     reasoning: str
 
-    next_step: str
+    next_step: NextStep

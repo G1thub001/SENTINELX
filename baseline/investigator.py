@@ -1,4 +1,10 @@
-from sentinelx.models import InvestigationCase, InvestigationResult
+from sentinelx.models import (
+    Confidence,
+    InvestigationCase,
+    InvestigationResult,
+    NextStep,
+    Outcome,
+)
 
 
 SUSPICIOUS_ACTIONS = {
@@ -59,9 +65,9 @@ def investigate(case: InvestigationCase) -> InvestigationResult:
     if not suspicious_events:
         return InvestigationResult(
             case_id=case.case_id,
-            outcome="benign",
+            outcome=Outcome.BENIGN,
             category="benign_activity",
-            confidence="high",
+            confidence=Confidence.HIGH,
             evidence_event_ids=[
                 event.event_id for event in case.events
             ],
@@ -70,7 +76,7 @@ def investigate(case: InvestigationCase) -> InvestigationResult:
                 "indicator. The available telemetry is consistent "
                 "with routine activity."
             ),
-            next_step="Continue normal monitoring.",
+            next_step=NextStep.CONTINUE_MONITORING,
         )
 
     evidence_ids = [
@@ -78,14 +84,14 @@ def investigate(case: InvestigationCase) -> InvestigationResult:
     ]
 
     confidence = (
-        "medium"
+        Confidence.MEDIUM
         if len(suspicious_events) == 1
-        else "high"
+        else Confidence.HIGH
     )
 
     return InvestigationResult(
         case_id=case.case_id,
-        outcome="suspicious",
+        outcome=Outcome.SUSPICIOUS,
         category="suspicious_activity",
         confidence=confidence,
         evidence_event_ids=evidence_ids,
@@ -94,8 +100,5 @@ def investigate(case: InvestigationCase) -> InvestigationResult:
             "with individually suspicious characteristics. "
             "Additional investigation is recommended."
         ),
-        next_step=(
-            "Investigate the identified events and gather "
-            "additional evidence."
-        ),
+        next_step=NextStep.INVESTIGATE,
     )

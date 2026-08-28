@@ -1,0 +1,60 @@
+{
+  "case_id": "C03",
+  "description": "An impossible-travel authentication alert is generated for an employee whose authentications traverse the corporate VPN infrastructure.",
+  "events": [
+    {
+      "event_id": "EVT-004",
+      "timestamp": "2026-08-28T08:14:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "vpn-gateway-02",
+      "user": "alice",
+      "source_ip": "10.20.15.42",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "medium",
+      "details": {
+        "location": "Nairobi",
+        "device_known": true,
+        "vpn_connection": true
+      }
+    },
+    {
+      "event_id": "EVT-005",
+      "timestamp": "2026-08-28T08:17:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "vpn-gateway-02",
+      "user": "alice",
+      "source_ip": "10.20.15.42",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "medium",
+      "details": {
+        "location": "London",
+        "device_known": true,
+        "vpn_connection": true,
+        "corporate_vpn_egress": true
+      }
+    },
+    {
+      "event_id": "EVT-006",
+      "timestamp": "2026-08-28T08:18:00Z",
+      "event_type": "network",
+      "source": "vpn-controller",
+      "host": "vpn-gateway-02",
+      "user": "alice",
+      "source_ip": "10.20.15.42",
+      "action": "vpn_session_active",
+      "status": "success",
+      "severity": "low",
+      "details": {
+        "corporate_vpn": true,
+        "user_session": "VPN-88421",
+        "approved_gateway": true
+      }
+    }
+  ]
+}

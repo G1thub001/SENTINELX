@@ -8,14 +8,27 @@ def score_result(
     """Score an investigation result against its ground truth."""
 
     outcome_score = (
-        30.0
-        if result.outcome.lower() == ground_truth.expected_outcome.lower()
+        25.0
+        if result.outcome == ground_truth.expected_outcome
         else 0.0
     )
 
     category_score = (
-        20.0
-        if result.category.lower() == ground_truth.expected_category.lower()
+        15.0
+        if result.category.lower()
+        == ground_truth.expected_category.lower()
+        else 0.0
+    )
+
+    confidence_score = (
+        10.0
+        if result.confidence == ground_truth.expected_confidence
+        else 0.0
+    )
+
+    next_step_score = (
+        10.0
+        if result.next_step == ground_truth.expected_next_step
         else 0.0
     )
 
@@ -33,12 +46,13 @@ def score_result(
         )
 
         evidence_score = 30.0 * (
-            len(matched_evidence) / len(required_evidence_ids)
+            len(matched_evidence)
+            / len(required_evidence_ids)
         )
     else:
         evidence_score = 30.0
 
-    unsupported_score = 20.0
+    unsupported_score = 10.0
 
     reasoning_lower = result.reasoning.lower()
 
@@ -51,11 +65,15 @@ def score_result(
         "outcome": outcome_score,
         "category": category_score,
         "evidence": evidence_score,
+        "confidence": confidence_score,
+        "next_step": next_step_score,
         "unsupported_claims": unsupported_score,
         "total": (
             outcome_score
             + category_score
             + evidence_score
+            + confidence_score
+            + next_step_score
             + unsupported_score
         ),
     }

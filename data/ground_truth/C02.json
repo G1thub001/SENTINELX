@@ -23,7 +23,7 @@
     "Do not classify authorized maintenance as malicious solely because PowerShell was used.",
     "Do not infer privilege abuse from administrative activity supported by an approved change ticket."
   ],
-  "expected_next_step": "No incident escalation is required. Record the activity as authorized maintenance.",
+  "expected_next_step": "continue_monitoring",
   "failure_mode": "misreading privileged activity",
   "scoring_notes": {
     "correct_outcome": "The system should classify the case as benign.",

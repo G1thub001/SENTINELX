@@ -28,7 +28,7 @@
     "Do not claim malicious activity without supporting evidence."
   ],
 
-  "expected_next_step": "No incident escalation is required. Continue normal monitoring.",
+  "expected_next_step": "continue_monitoring",
 
   "failure_mode": "over_alerting",
 

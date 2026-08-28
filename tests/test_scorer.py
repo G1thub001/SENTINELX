@@ -20,8 +20,10 @@ def test_c01_baseline_score():
     result = investigate(case)
     scores = score_result(result, ground_truth)
 
-    assert scores["outcome"] == 30.0
+    assert scores["outcome"] == 25.0
     assert scores["category"] == 0.0
     assert scores["evidence"] == 30.0
-    assert scores["unsupported_claims"] == 20.0
-    assert scores["total"] == 80.0
+    assert scores["confidence"] == 10.0
+    assert scores["next_step"] == 10.0
+    assert scores["unsupported_claims"] == 10.0
+    assert scores["total"] == 85.0

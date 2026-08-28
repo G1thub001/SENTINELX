@@ -1,0 +1,37 @@
+{
+  "case_id": "C03",
+  "expected_outcome": "benign",
+  "expected_category": "benign_vpn_activity",
+  "expected_confidence": "high",
+  "scenario": "An impossible-travel signal is explained by the employee connecting through approved corporate VPN infrastructure.",
+  "required_evidence": [
+    "The authentications belong to the same known employee account.",
+    "The source device is known.",
+    "Both authentication events indicate VPN usage.",
+    "The apparent geographic locations are associated with corporate VPN egress infrastructure.",
+    "A corresponding active corporate VPN session exists."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-004",
+    "EVT-005",
+    "EVT-006"
+  ],
+  "supporting_events": [
+    "EVT-004",
+    "EVT-005",
+    "EVT-006"
+  ],
+  "forbidden_conclusions": [
+    "Do not conclude that the employee physically traveled between the reported locations.",
+    "Do not infer account compromise solely from the impossible-travel signal.",
+    "Do not classify the activity as malicious when the corporate VPN context explains the apparent location change."
+  ],
+  "expected_next_step": "continue_monitoring",
+  "failure_mode": "context blindness",
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the case as benign.",
+    "evidence_requirement": "The system should correlate the authentication events with the active corporate VPN session.",
+    "uncertainty_requirement": "High confidence is appropriate because the VPN telemetry provides a consistent explanation.",
+    "unsupported_claim_penalty": "Claims of account compromise or physical impossible travel without accounting for VPN infrastructure should be penalized."
+  }
+}
