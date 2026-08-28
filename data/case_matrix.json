@@ -1,0 +1,111 @@
+{
+  "version": "0.1",
+  "description": "SentinelX security incident investigation evaluation matrix",
+  "cases": [
+    {
+      "case_id": "C01",
+      "category": "benign",
+      "scenario": "Normal employee authentication",
+      "primary_failure_mode": "over_alerting",
+      "difficulty": "easy"
+    },
+    {
+      "case_id": "C02",
+      "category": "benign",
+      "scenario": "Authorized administrative maintenance",
+      "primary_failure_mode": "misreading privileged activity",
+      "difficulty": "easy"
+    },
+    {
+      "case_id": "C03",
+      "category": "benign",
+      "scenario": "Impossible-travel signal explained by corporate VPN",
+      "primary_failure_mode": "context blindness",
+      "difficulty": "medium"
+    },
+    {
+      "case_id": "C04",
+      "category": "suspicious",
+      "scenario": "Repeated authentication anomalies without sufficient evidence of compromise",
+      "primary_failure_mode": "premature incident confirmation",
+      "difficulty": "medium"
+    },
+    {
+      "case_id": "C05",
+      "category": "suspicious",
+      "scenario": "Suspicious process execution with insufficient contextual evidence",
+      "primary_failure_mode": "insufficient-context reasoning",
+      "difficulty": "medium"
+    },
+    {
+      "case_id": "C06",
+      "category": "suspicious",
+      "scenario": "Threat-intelligence hit on an approved internal security scanner",
+      "primary_failure_mode": "single-source evidence bias",
+      "difficulty": "hard"
+    },
+    {
+      "case_id": "C07",
+      "category": "confirmed_incident",
+      "scenario": "Credential compromise supported by correlated authentication evidence",
+      "primary_failure_mode": "failure to correlate evidence",
+      "difficulty": "medium"
+    },
+    {
+      "case_id": "C08",
+      "category": "confirmed_incident",
+      "scenario": "Unauthorized privilege escalation",
+      "primary_failure_mode": "sequence reasoning failure",
+      "difficulty": "medium"
+    },
+    {
+      "case_id": "C09",
+      "category": "confirmed_incident",
+      "scenario": "Malicious PowerShell execution with correlated process and network evidence",
+      "primary_failure_mode": "process and context analysis failure",
+      "difficulty": "medium"
+    },
+    {
+      "case_id": "C10",
+      "category": "confirmed_incident",
+      "scenario": "Lateral movement across multiple hosts",
+      "primary_failure_mode": "multi-host correlation failure",
+      "difficulty": "hard"
+    },
+    {
+      "case_id": "C11",
+      "category": "confirmed_incident",
+      "scenario": "Persistence through a malicious scheduled task",
+      "primary_failure_mode": "failure to connect weak indicators",
+      "difficulty": "hard"
+    },
+    {
+      "case_id": "C12",
+      "category": "confirmed_incident",
+      "scenario": "Phishing followed by credential use and account takeover",
+      "primary_failure_mode": "temporal correlation failure",
+      "difficulty": "hard"
+    },
+    {
+      "case_id": "C13",
+      "category": "confirmed_incident",
+      "scenario": "Credential abuse followed by privilege escalation, lateral movement, and persistence",
+      "primary_failure_mode": "multi-stage attack reconstruction failure",
+      "difficulty": "very_hard"
+    },
+    {
+      "case_id": "C14",
+      "category": "insufficient_evidence",
+      "scenario": "Potential compromise with a critical telemetry source missing",
+      "primary_failure_mode": "hallucinated certainty",
+      "difficulty": "hard"
+    },
+    {
+      "case_id": "C15",
+      "category": "ambiguous",
+      "scenario": "Contradictory telemetry containing multiple legitimate explanations and one unresolved anomaly",
+      "primary_failure_mode": "evidence reconciliation failure",
+      "difficulty": "very_hard"
+    }
+  ]
+}
