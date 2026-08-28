@@ -1,0 +1,37 @@
+{
+  "case_id": "C06",
+  "expected_outcome": "benign",
+  "expected_category": "authorized_security_scanning",
+  "expected_confidence": "high",
+  "scenario": "A threat-intelligence hit is associated with an outbound connection from an approved internal security scanner performing an authorized vulnerability scan.",
+  "required_evidence": [
+    "The destination generated a threat-intelligence match.",
+    "The source host is an approved internal security scanner.",
+    "The connection is associated with a vulnerability-scanning action.",
+    "The scan is associated with an authorized scan job.",
+    "Asset inventory confirms the source host is an approved security scanner."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-011",
+    "EVT-012",
+    "EVT-013"
+  ],
+  "supporting_events": [
+    "EVT-011",
+    "EVT-012",
+    "EVT-013"
+  ],
+  "forbidden_conclusions": [
+    "Do not classify the connection as malicious solely because of the threat-intelligence match.",
+    "Do not infer compromise of the security scanner without corroborating evidence.",
+    "Do not ignore the authorized security-scanning context."
+  ],
+  "expected_next_step": "continue_monitoring",
+  "failure_mode": "single-source evidence bias",
+  "scoring_notes": {
+    "correct_outcome": "The system should recognize the threat-intelligence hit but classify the activity as authorized security scanning.",
+    "evidence_requirement": "The system should correlate the threat-intelligence result with scanner identity, scan activity, authorization, and asset inventory.",
+    "uncertainty_requirement": "High confidence is appropriate because multiple independent telemetry sources explain the apparent threat.",
+    "unsupported_claim_penalty": "Treating the threat-intelligence hit alone as proof of compromise should be penalized."
+  }
+}

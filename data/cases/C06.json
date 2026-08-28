@@ -1,0 +1,58 @@
+{
+  "case_id": "C06",
+  "description": "A threat-intelligence alert identifies an external destination as malicious, but the connection originates from an approved internal security scanner performing authorized scanning activity.",
+  "events": [
+    {
+      "event_id": "EVT-011",
+      "timestamp": "2026-08-28T13:10:00Z",
+      "event_type": "network",
+      "source": "network-monitor",
+      "host": "sec-scanner-01",
+      "user": "scanner-service",
+      "source_ip": "10.30.5.10",
+      "destination_ip": "198.51.100.25",
+      "action": "outbound_connection",
+      "status": "success",
+      "severity": "high",
+      "details": {
+        "threat_intelligence_match": true,
+        "threat_category": "malicious_infrastructure",
+        "scanner_host": true
+      }
+    },
+    {
+      "event_id": "EVT-012",
+      "timestamp": "2026-08-28T13:10:05Z",
+      "event_type": "network",
+      "source": "security-scanner",
+      "host": "sec-scanner-01",
+      "user": "scanner-service",
+      "source_ip": "10.30.5.10",
+      "destination_ip": "198.51.100.25",
+      "action": "vulnerability_scan",
+      "status": "success",
+      "severity": "medium",
+      "details": {
+        "scanner_name": "InternalSecScan",
+        "authorized": true,
+        "scan_job": "SCAN-2026-8821"
+      }
+    },
+    {
+      "event_id": "EVT-013",
+      "timestamp": "2026-08-28T13:11:00Z",
+      "event_type": "endpoint",
+      "source": "asset-inventory",
+      "host": "sec-scanner-01",
+      "user": "scanner-service",
+      "action": "asset_validation",
+      "status": "success",
+      "severity": "low",
+      "details": {
+        "asset_role": "approved_security_scanner",
+        "owner": "security_operations",
+        "authorized": true
+      }
+    }
+  ]
+}
