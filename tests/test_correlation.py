@@ -114,3 +114,24 @@ def test_evidence_graph_is_bidirectional():
     graph = build_evidence_graph(case)
 
     assert "EVT-025" in graph.neighbors("EVT-026")
+
+def test_c13_events_form_connected_evidence_component():
+    case = load_case(
+        PROJECT_ROOT / "data" / "cases" / "C13.json"
+    )
+
+    graph = build_evidence_graph(case)
+
+    components = graph.connected_components()
+
+    assert any(
+        {
+            "EVT-034",
+            "EVT-035",
+            "EVT-036",
+            "EVT-037",
+            "EVT-038",
+            "EVT-039",
+        }.issubset(component)
+        for component in components
+    )
