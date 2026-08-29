@@ -3,6 +3,7 @@ from pathlib import Path
 from evaluation.loader import load_case
 from sentinelx.correlation.engine import correlate_events
 from sentinelx.correlation.links import LinkType
+from sentinelx.correlation.graph import build_evidence_graph
 
 
 
@@ -94,3 +95,22 @@ def test_c10_detects_host_transition():
     }
 
     assert ("EVT-025", "EVT-026") in pairs
+
+def test_c10_builds_evidence_graph():
+    case = load_case(
+        PROJECT_ROOT / "data" / "cases" / "C10.json"
+    )
+
+    graph = build_evidence_graph(case)
+
+    assert graph.neighbors("EVT-025")
+    assert "EVT-026" in graph.neighbors("EVT-025")
+
+def test_evidence_graph_is_bidirectional():
+    case = load_case(
+        PROJECT_ROOT / "data" / "cases" / "C10.json"
+    )
+
+    graph = build_evidence_graph(case)
+
+    assert "EVT-025" in graph.neighbors("EVT-026")
