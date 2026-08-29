@@ -1,0 +1,64 @@
+{
+  "case_id": "C09",
+  "description": "Malicious PowerShell execution is correlated with suspicious outbound network activity from the same endpoint.",
+  "events": [
+    {
+      "event_id": "EVT-020",
+      "timestamp": "2026-08-28T16:02:00Z",
+      "event_type": "process",
+      "source": "endpoint-agent",
+      "host": "workstation-55",
+      "user": "frank",
+      "source_ip": "10.20.40.55",
+      "process_name": "powershell.exe",
+      "parent_process": "winword.exe",
+      "command_line": "powershell.exe -enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAI...",
+      "action": "process_execution",
+      "status": "success",
+      "severity": "high",
+      "details": {
+        "encoded_command": true,
+        "parent_process_suspicious": true,
+        "script_execution": true
+      }
+    },
+    {
+      "event_id": "EVT-021",
+      "timestamp": "2026-08-28T16:02:08Z",
+      "event_type": "network",
+      "source": "network-monitor",
+      "host": "workstation-55",
+      "user": "frank",
+      "source_ip": "10.20.40.55",
+      "destination_ip": "203.0.113.88",
+      "destination_domain": "cdn-sync.example",
+      "action": "outbound_connection",
+      "status": "success",
+      "severity": "high",
+      "details": {
+        "reputation": "malicious",
+        "connection_type": "https",
+        "new_destination": true
+      }
+    },
+    {
+      "event_id": "EVT-022",
+      "timestamp": "2026-08-28T16:02:10Z",
+      "event_type": "endpoint",
+      "source": "endpoint-agent",
+      "host": "workstation-55",
+      "user": "frank",
+      "source_ip": "10.20.40.55",
+      "process_name": "powershell.exe",
+      "parent_process": "winword.exe",
+      "action": "child_process_network_activity",
+      "status": "observed",
+      "severity": "high",
+      "details": {
+        "related_process": "powershell.exe",
+        "destination": "203.0.113.88",
+        "process_network_link": true
+      }
+    }
+  ]
+}

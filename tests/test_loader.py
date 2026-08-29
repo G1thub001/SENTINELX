@@ -33,8 +33,8 @@ def test_load_c01_ground_truth():
 def test_load_all_cases():
     cases = load_all_cases(PROJECT_ROOT / "data" / "cases")
 
-    assert len(cases) == 6
-    assert {case.case_id for case in cases} == {"C01", "C02", "C03", "C04", "C05", "C06"}
+    assert len(cases) == 13
+    assert {case.case_id for case in cases} == {"C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13"}
 
 
 def test_load_all_ground_truth():
@@ -42,7 +42,7 @@ def test_load_all_ground_truth():
         PROJECT_ROOT / "data" / "ground_truth"
     )
 
-    assert len(ground_truth) == 6
+    assert len(ground_truth) == 13
     assert {
         truth.case_id for truth in ground_truth
-    } == {"C01", "C02", "C03", "C04", "C05", "C06"}
+    } == {"C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13"}

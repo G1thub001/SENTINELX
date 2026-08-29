@@ -1,0 +1,39 @@
+{
+  "case_id": "C12",
+  "expected_outcome": "confirmed_incident",
+  "expected_category": "phishing_account_takeover",
+  "expected_confidence": "high",
+  "scenario": "A malicious phishing email is delivered and interacted with, followed minutes later by credential use from an unrecognized source and unauthorized account takeover activity.",
+  "required_evidence": [
+    "A malicious phishing email is delivered to the employee.",
+    "The employee interacts with the phishing content.",
+    "The same account is subsequently used from an unrecognized source.",
+    "The credential use is associated with the recent phishing event.",
+    "Unauthorized account takeover activity follows the credential use."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-030",
+    "EVT-031",
+    "EVT-032",
+    "EVT-033"
+  ],
+  "supporting_events": [
+    "EVT-030",
+    "EVT-031",
+    "EVT-032",
+    "EVT-033"
+  ],
+  "forbidden_conclusions": [
+    "Do not analyze the phishing event independently from the subsequent credential use.",
+    "Do not dismiss the unusual authentication without considering the preceding phishing activity.",
+    "Do not classify the account takeover as unrelated to the credential-use event without supporting evidence."
+  ],
+  "expected_next_step": "contain",
+  "failure_mode": "temporal correlation failure",
+  "scoring_notes": {
+    "correct_outcome": "The system should recognize the sequence as a phishing-driven account takeover.",
+    "evidence_requirement": "The system should connect phishing delivery, user interaction, credential use, and takeover activity.",
+    "uncertainty_requirement": "High confidence is appropriate because the events form a coherent temporal attack chain.",
+    "unsupported_claim_penalty": "The system should not treat the events as unrelated when the timestamps and account context establish a clear progression."
+  }
+}

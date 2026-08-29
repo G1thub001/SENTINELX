@@ -1,0 +1,39 @@
+{
+  "case_id": "C10",
+  "expected_outcome": "confirmed_incident",
+  "expected_category": "lateral_movement",
+  "expected_confidence": "high",
+  "scenario": "The same user account is used for sequential remote access across multiple internal hosts, followed by unauthorized privileged activity on the final host.",
+  "required_evidence": [
+    "The same user account authenticates remotely to multiple internal hosts.",
+    "The authentication sequence moves from one internal host to another.",
+    "Remote network activity connects the second host to a third host.",
+    "The same account is associated with activity across the host sequence.",
+    "Unauthorized privileged activity occurs on the final host."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-023",
+    "EVT-024",
+    "EVT-025",
+    "EVT-026"
+  ],
+  "supporting_events": [
+    "EVT-023",
+    "EVT-024",
+    "EVT-025",
+    "EVT-026"
+  ],
+  "forbidden_conclusions": [
+    "Do not analyze the authentication events independently without considering the host-to-host sequence.",
+    "Do not classify the activity as isolated authentication anomalies when the events form a multi-host progression.",
+    "Do not dismiss the final privileged activity without considering the preceding remote-access activity."
+  ],
+  "expected_next_step": "contain",
+  "failure_mode": "multi-host correlation failure",
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the activity as a confirmed lateral movement incident.",
+    "evidence_requirement": "The system should correlate the authentication and network events across the three hosts and connect them to the final privileged activity.",
+    "uncertainty_requirement": "High confidence is appropriate because the same account is observed moving through multiple hosts followed by unauthorized privileged activity.",
+    "unsupported_claim_penalty": "The system should not treat the events as unrelated isolated activities."
+  }
+}

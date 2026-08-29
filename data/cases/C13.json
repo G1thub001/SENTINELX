@@ -1,0 +1,115 @@
+{
+  "case_id": "C13",
+  "description": "A compromised account is used through multiple stages of an attack involving credential abuse, privilege escalation, lateral movement, and persistence.",
+  "events": [
+    {
+      "event_id": "EVT-034",
+      "timestamp": "2026-08-28T20:01:00Z",
+      "event_type": "authentication",
+      "source": "identity-provider",
+      "host": "idp-01",
+      "user": "jack",
+      "source_ip": "203.0.113.150",
+      "action": "credential_use",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "high",
+      "details": {
+        "device_known": false,
+        "location_known": false,
+        "risk_signal": "high"
+      }
+    },
+    {
+      "event_id": "EVT-035",
+      "timestamp": "2026-08-28T20:04:00Z",
+      "event_type": "privilege",
+      "source": "endpoint-agent",
+      "host": "workstation-81",
+      "user": "jack",
+      "source_ip": "10.20.80.81",
+      "action": "privilege_escalation",
+      "status": "success",
+      "severity": "critical",
+      "details": {
+        "previous_role": "standard_user",
+        "new_role": "local_administrator",
+        "authorization": "not_approved"
+      }
+    },
+    {
+      "event_id": "EVT-036",
+      "timestamp": "2026-08-28T20:07:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "server-10",
+      "user": "jack",
+      "source_ip": "10.20.80.81",
+      "destination_ip": "10.20.80.90",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "high",
+      "details": {
+        "logon_type": "remote",
+        "source_host": "workstation-81",
+        "destination_host": "server-10"
+      }
+    },
+    {
+      "event_id": "EVT-037",
+      "timestamp": "2026-08-28T20:10:00Z",
+      "event_type": "network",
+      "source": "network-monitor",
+      "host": "server-10",
+      "user": "jack",
+      "source_ip": "10.20.80.90",
+      "destination_ip": "10.20.80.91",
+      "action": "remote_connection",
+      "status": "success",
+      "severity": "high",
+      "details": {
+        "protocol": "SMB",
+        "destination_host": "server-11",
+        "remote_access": true
+      }
+    },
+    {
+      "event_id": "EVT-038",
+      "timestamp": "2026-08-28T20:13:00Z",
+      "event_type": "endpoint",
+      "source": "endpoint-agent",
+      "host": "server-11",
+      "user": "jack",
+      "source_ip": "10.20.80.90",
+      "process_name": "schtasks.exe",
+      "command_line": "schtasks /create /tn SystemHealthCheck /tr C:\\ProgramData\\health.ps1 /sc onstart",
+      "action": "scheduled_task_created",
+      "status": "success",
+      "severity": "critical",
+      "details": {
+        "task_name": "SystemHealthCheck",
+        "trigger": "onstart",
+        "script_path": "C:\\ProgramData\\health.ps1",
+        "authorization": "not_approved"
+      }
+    },
+    {
+      "event_id": "EVT-039",
+      "timestamp": "2026-08-28T20:15:00Z",
+      "event_type": "endpoint",
+      "source": "endpoint-agent",
+      "host": "server-11",
+      "user": "jack",
+      "source_ip": "10.20.80.90",
+      "action": "persistence_triggered",
+      "status": "observed",
+      "severity": "critical",
+      "details": {
+        "mechanism": "scheduled_task",
+        "task_name": "SystemHealthCheck",
+        "authorized": false
+      }
+    }
+  ]
+}

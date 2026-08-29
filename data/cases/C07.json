@@ -1,0 +1,63 @@
+{
+  "case_id": "C07",
+  "description": "Credential compromise supported by correlated authentication evidence from an unusual source and subsequent account activity.",
+  "events": [
+    {
+      "event_id": "EVT-014",
+      "timestamp": "2026-08-28T14:02:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "vpn-gateway-03",
+      "user": "david",
+      "source_ip": "203.0.113.45",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "high",
+      "details": {
+        "device_known": false,
+        "location_known": false,
+        "location": "Unrecognized",
+        "vpn_connection": false
+      }
+    },
+    {
+      "event_id": "EVT-015",
+      "timestamp": "2026-08-28T14:03:00Z",
+      "event_type": "authentication",
+      "source": "identity-provider",
+      "host": "idp-01",
+      "user": "david",
+      "source_ip": "203.0.113.45",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "high",
+      "details": {
+        "device_known": false,
+        "location_known": false,
+        "risk_signal": "high",
+        "impossible_travel": true
+      }
+    },
+    {
+      "event_id": "EVT-016",
+      "timestamp": "2026-08-28T14:05:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "workstation-08",
+      "user": "david",
+      "source_ip": "10.20.22.18",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "medium",
+      "details": {
+        "device_known": true,
+        "location_known": true,
+        "location": "Nairobi",
+        "normal_working_hours": true
+      }
+    }
+  ]
+}

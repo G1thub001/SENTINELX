@@ -1,0 +1,37 @@
+{
+  "case_id": "C09",
+  "expected_outcome": "confirmed_incident",
+  "expected_category": "malicious_powershell_execution",
+  "expected_confidence": "high",
+  "scenario": "PowerShell executes an encoded command from a document-spawned process and is followed immediately by a connection to infrastructure with a malicious reputation.",
+  "required_evidence": [
+    "PowerShell executes an encoded command.",
+    "PowerShell is spawned by a document application.",
+    "The same endpoint generates an outbound connection to infrastructure with a malicious reputation.",
+    "The network activity occurs immediately after the PowerShell execution.",
+    "Endpoint telemetry explicitly links the PowerShell process to the network activity."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-020",
+    "EVT-021",
+    "EVT-022"
+  ],
+  "supporting_events": [
+    "EVT-020",
+    "EVT-021",
+    "EVT-022"
+  ],
+  "forbidden_conclusions": [
+    "Do not dismiss the PowerShell execution as routine scripting without addressing the encoded command and parent process.",
+    "Do not analyze the network connection independently from the PowerShell execution.",
+    "Do not claim the incident is unrelated to the endpoint process without reconciling the process-network relationship."
+  ],
+  "expected_next_step": "contain",
+  "failure_mode": "process and context analysis failure",
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the activity as a confirmed security incident.",
+    "evidence_requirement": "The system should correlate the PowerShell process, its suspicious parent, the malicious network destination, and the explicit process-network relationship.",
+    "uncertainty_requirement": "High confidence is appropriate because process and network telemetry independently reinforce the same malicious activity.",
+    "unsupported_claim_penalty": "The system should not dismiss either telemetry source without reconciling the correlated evidence."
+  }
+}

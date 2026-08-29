@@ -1,0 +1,77 @@
+{
+  "case_id": "C12",
+  "description": "A phishing event is followed by credential use from an unusual source and subsequent account takeover activity.",
+  "events": [
+    {
+      "event_id": "EVT-030",
+      "timestamp": "2026-08-28T19:01:00Z",
+      "event_type": "network",
+      "source": "email-security",
+      "host": "mail-gateway-01",
+      "user": "iris",
+      "source_ip": "10.20.70.10",
+      "destination_domain": "secure-docs.example",
+      "action": "phishing_email_delivered",
+      "status": "success",
+      "severity": "high",
+      "details": {
+        "sender_reputation": "malicious",
+        "attachment": "invoice.html",
+        "url_reputation": "malicious"
+      }
+    },
+    {
+      "event_id": "EVT-031",
+      "timestamp": "2026-08-28T19:04:00Z",
+      "event_type": "endpoint",
+      "source": "endpoint-agent",
+      "host": "workstation-71",
+      "user": "iris",
+      "source_ip": "10.20.70.71",
+      "action": "user_link_interaction",
+      "status": "observed",
+      "severity": "high",
+      "details": {
+        "destination_domain": "secure-docs.example",
+        "phishing_event_id": "EVT-030"
+      }
+    },
+    {
+      "event_id": "EVT-032",
+      "timestamp": "2026-08-28T19:08:00Z",
+      "event_type": "authentication",
+      "source": "identity-provider",
+      "host": "idp-01",
+      "user": "iris",
+      "source_ip": "203.0.113.121",
+      "action": "credential_use",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "high",
+      "details": {
+        "device_known": false,
+        "location_known": false,
+        "source_country": "Unknown",
+        "credential_source": "recent_phishing_event"
+      }
+    },
+    {
+      "event_id": "EVT-033",
+      "timestamp": "2026-08-28T19:10:00Z",
+      "event_type": "privilege",
+      "source": "identity-provider",
+      "host": "idp-01",
+      "user": "iris",
+      "source_ip": "203.0.113.121",
+      "action": "account_takeover",
+      "status": "success",
+      "severity": "critical",
+      "details": {
+        "password_changed": true,
+        "recovery_email_changed": true,
+        "device_known": false,
+        "authorization": "not_approved"
+      }
+    }
+  ]
+}

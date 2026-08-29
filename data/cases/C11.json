@@ -1,0 +1,63 @@
+{
+  "case_id": "C11",
+  "description": "A malicious scheduled task is created and subsequently executed, establishing persistence on an endpoint.",
+  "events": [
+    {
+      "event_id": "EVT-027",
+      "timestamp": "2026-08-28T18:10:00Z",
+      "event_type": "endpoint",
+      "source": "endpoint-agent",
+      "host": "workstation-63",
+      "user": "henry",
+      "source_ip": "10.20.60.63",
+      "process_name": "schtasks.exe",
+      "command_line": "schtasks /create /tn WindowsUpdateCheck /tr C:\\Users\\henry\\AppData\\update.ps1 /sc onlogon",
+      "action": "scheduled_task_created",
+      "status": "success",
+      "severity": "medium",
+      "details": {
+        "task_name": "WindowsUpdateCheck",
+        "trigger": "onlogon",
+        "script_path": "C:\\Users\\henry\\AppData\\update.ps1",
+        "authorization": "not_approved"
+      }
+    },
+    {
+      "event_id": "EVT-028",
+      "timestamp": "2026-08-28T18:11:00Z",
+      "event_type": "process",
+      "source": "endpoint-agent",
+      "host": "workstation-63",
+      "user": "henry",
+      "source_ip": "10.20.60.63",
+      "process_name": "powershell.exe",
+      "parent_process": "svchost.exe",
+      "command_line": "powershell.exe -File C:\\Users\\henry\\AppData\\update.ps1",
+      "action": "process_execution",
+      "status": "success",
+      "severity": "medium",
+      "details": {
+        "script_path": "C:\\Users\\henry\\AppData\\update.ps1",
+        "execution_source": "scheduled_task"
+      }
+    },
+    {
+      "event_id": "EVT-029",
+      "timestamp": "2026-08-28T18:12:00Z",
+      "event_type": "endpoint",
+      "source": "endpoint-agent",
+      "host": "workstation-63",
+      "user": "henry",
+      "source_ip": "10.20.60.63",
+      "action": "persistence_triggered",
+      "status": "observed",
+      "severity": "high",
+      "details": {
+        "mechanism": "scheduled_task",
+        "task_name": "WindowsUpdateCheck",
+        "trigger": "onlogon",
+        "authorized": false
+      }
+    }
+  ]
+}

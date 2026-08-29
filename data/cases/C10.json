@@ -1,0 +1,81 @@
+{
+  "case_id": "C10",
+  "description": "A compromised account is used to move laterally across multiple internal hosts through a sequence of remote authentication and administrative activity.",
+  "events": [
+    {
+      "event_id": "EVT-023",
+      "timestamp": "2026-08-28T17:01:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "server-01",
+      "user": "grace",
+      "source_ip": "10.20.50.12",
+      "destination_ip": "10.20.50.21",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "high",
+      "details": {
+        "logon_type": "remote",
+        "source_host": "workstation-77",
+        "destination_host": "server-01",
+        "device_known": false
+      }
+    },
+    {
+      "event_id": "EVT-024",
+      "timestamp": "2026-08-28T17:03:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "server-02",
+      "user": "grace",
+      "source_ip": "10.20.50.21",
+      "destination_ip": "10.20.50.22",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "high",
+      "details": {
+        "logon_type": "remote",
+        "source_host": "server-01",
+        "destination_host": "server-02",
+        "device_known": false
+      }
+    },
+    {
+      "event_id": "EVT-025",
+      "timestamp": "2026-08-28T17:05:00Z",
+      "event_type": "network",
+      "source": "network-monitor",
+      "host": "server-02",
+      "user": "grace",
+      "source_ip": "10.20.50.22",
+      "destination_ip": "10.20.50.23",
+      "action": "remote_connection",
+      "status": "success",
+      "severity": "high",
+      "details": {
+        "protocol": "SMB",
+        "destination_host": "server-03",
+        "remote_access": true
+      }
+    },
+    {
+      "event_id": "EVT-026",
+      "timestamp": "2026-08-28T17:07:00Z",
+      "event_type": "privilege",
+      "source": "endpoint-agent",
+      "host": "server-03",
+      "user": "grace",
+      "source_ip": "10.20.50.22",
+      "action": "privileged_action",
+      "status": "success",
+      "severity": "high",
+      "details": {
+        "destination_host": "server-03",
+        "action_target": "administrative_share",
+        "authorization": "not_approved"
+      }
+    }
+  ]
+}

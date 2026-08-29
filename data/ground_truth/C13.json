@@ -1,0 +1,46 @@
+{
+  "case_id": "C13",
+  "expected_outcome": "confirmed_incident",
+  "expected_category": "multi_stage_attack",
+  "expected_confidence": "high",
+  "scenario": "A high-risk credential is used from an unrecognized source, followed by unauthorized privilege escalation, lateral movement to additional hosts, and establishment of persistence through a scheduled task.",
+  "required_evidence": [
+    "The account is used from a high-risk unrecognized authentication source.",
+    "The account subsequently obtains elevated privileges without authorization.",
+    "The elevated account is used for remote access to another internal host.",
+    "The activity continues from that host to an additional internal host.",
+    "An unauthorized scheduled task is created on the final host.",
+    "The scheduled task is confirmed to establish persistence."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-034",
+    "EVT-035",
+    "EVT-036",
+    "EVT-037",
+    "EVT-038",
+    "EVT-039"
+  ],
+  "supporting_events": [
+    "EVT-034",
+    "EVT-035",
+    "EVT-036",
+    "EVT-037",
+    "EVT-038",
+    "EVT-039"
+  ],
+  "forbidden_conclusions": [
+    "Do not analyze the events as unrelated isolated alerts.",
+    "Do not ignore the progression from credential abuse to privilege escalation.",
+    "Do not ignore the multi-host movement before the persistence activity.",
+    "Do not classify the scheduled task as an isolated administrative event.",
+    "Do not dismiss the overall incident because individual stages may have legitimate-looking characteristics in isolation."
+  ],
+  "expected_next_step": "contain",
+  "failure_mode": "multi-stage attack reconstruction failure",
+  "scoring_notes": {
+    "correct_outcome": "The system should reconstruct the complete activity as a confirmed multi-stage attack.",
+    "evidence_requirement": "The system should connect credential abuse, privilege escalation, lateral movement, and persistence into one attack chain.",
+    "uncertainty_requirement": "High confidence is appropriate because multiple telemetry sources and stages reinforce one another.",
+    "unsupported_claim_penalty": "The system should not treat each stage as an unrelated event or dismiss the overall attack chain."
+  }
+}

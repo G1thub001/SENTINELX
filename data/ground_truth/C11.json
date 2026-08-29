@@ -1,0 +1,37 @@
+{
+  "case_id": "C11",
+  "expected_outcome": "confirmed_incident",
+  "expected_category": "scheduled_task_persistence",
+  "expected_confidence": "high",
+  "scenario": "An unauthorized scheduled task is created to execute a PowerShell script at user logon, and telemetry confirms that the task establishes persistence.",
+  "required_evidence": [
+    "A scheduled task is created on the endpoint.",
+    "The task is configured to execute a PowerShell script from a user-controlled directory.",
+    "The task is configured to execute at user logon.",
+    "The task creation is explicitly unauthorized.",
+    "Endpoint telemetry confirms that the scheduled task triggers execution."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-027",
+    "EVT-028",
+    "EVT-029"
+  ],
+  "supporting_events": [
+    "EVT-027",
+    "EVT-028",
+    "EVT-029"
+  ],
+  "forbidden_conclusions": [
+    "Do not treat the scheduled task as benign without authorization evidence.",
+    "Do not analyze the task creation separately from its subsequent execution.",
+    "Do not dismiss the persistence signal because no malware detection event is present."
+  ],
+  "expected_next_step": "contain",
+  "failure_mode": "failure to connect weak indicators",
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the activity as a confirmed persistence incident.",
+    "evidence_requirement": "The system should connect scheduled task creation, script execution, logon triggering, and unauthorized status.",
+    "uncertainty_requirement": "High confidence is appropriate because multiple endpoint events corroborate the persistence mechanism.",
+    "unsupported_claim_penalty": "The absence of a malware-detection event should not be used to dismiss the correlated persistence evidence."
+  }
+}

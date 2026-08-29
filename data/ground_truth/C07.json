@@ -1,0 +1,37 @@
+{
+  "case_id": "C07",
+  "expected_outcome": "confirmed_incident",
+  "expected_category": "credential_compromise",
+  "expected_confidence": "high",
+  "scenario": "A known employee account is successfully authenticated from an unrecognized external source with high-risk authentication signals, while a normal session is simultaneously associated with the legitimate workstation.",
+  "required_evidence": [
+    "The employee account successfully authenticates from an unrecognized source.",
+    "The source device and location are not recognized.",
+    "The identity provider assigns a high authentication risk signal.",
+    "Impossible-travel is detected for the account.",
+    "A separate successful session exists from the employee's known workstation and normal environment."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-014",
+    "EVT-015",
+    "EVT-016"
+  ],
+  "supporting_events": [
+    "EVT-014",
+    "EVT-015",
+    "EVT-016"
+  ],
+  "forbidden_conclusions": [
+    "Do not dismiss the external authentication solely because a legitimate workstation session also exists.",
+    "Do not classify the high-risk authentication as benign without addressing the contradictory authentication context.",
+    "Do not claim certainty from a single authentication event without considering the correlated evidence."
+  ],
+  "expected_next_step": "contain",
+  "failure_mode": "failure to correlate evidence",
+  "scoring_notes": {
+    "correct_outcome": "The system should recognize the correlated authentication evidence as supporting credential compromise.",
+    "evidence_requirement": "The system should connect the high-risk external authentication with the legitimate session and conflicting authentication context.",
+    "uncertainty_requirement": "High confidence is appropriate because multiple authentication signals support the compromise assessment.",
+    "unsupported_claim_penalty": "The system should not dismiss the external authentication without reconciling the conflicting evidence."
+  }
+}

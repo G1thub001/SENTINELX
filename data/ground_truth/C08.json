@@ -1,0 +1,37 @@
+{
+  "case_id": "C08",
+  "expected_outcome": "confirmed_incident",
+  "expected_category": "unauthorized_privilege_escalation",
+  "expected_confidence": "high",
+  "scenario": "A standard user successfully logs in and then obtains local administrator privileges without authorization before performing a privileged security-related action.",
+  "required_evidence": [
+    "The account initially operates as a standard user.",
+    "The account successfully escalates to local administrator privileges.",
+    "The privilege escalation is explicitly identified as unauthorized.",
+    "A privileged action occurs after the escalation.",
+    "The escalation and subsequent privileged action occur on the same host and involve the same user."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-017",
+    "EVT-018",
+    "EVT-019"
+  ],
+  "supporting_events": [
+    "EVT-017",
+    "EVT-018",
+    "EVT-019"
+  ],
+  "forbidden_conclusions": [
+    "Do not treat the privilege escalation as authorized without evidence of authorization.",
+    "Do not ignore the sequence between the privilege escalation and subsequent privileged action.",
+    "Do not classify the privilege escalation as benign merely because the initial authentication was legitimate."
+  ],
+  "expected_next_step": "contain",
+  "failure_mode": "sequence reasoning failure",
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the activity as a confirmed security incident.",
+    "evidence_requirement": "The system should connect the initial user state, unauthorized escalation, and subsequent privileged action.",
+    "uncertainty_requirement": "High confidence is appropriate because the telemetry explicitly identifies the escalation as unauthorized and shows subsequent privileged activity.",
+    "unsupported_claim_penalty": "The system should not dismiss the escalation based solely on the legitimate initial login."
+  }
+}

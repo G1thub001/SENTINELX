@@ -1,0 +1,57 @@
+{
+  "case_id": "C08",
+  "description": "A standard user account undergoes an unauthorized privilege escalation followed by privileged activity.",
+  "events": [
+    {
+      "event_id": "EVT-017",
+      "timestamp": "2026-08-28T15:21:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "workstation-42",
+      "user": "emma",
+      "source_ip": "10.20.30.44",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "low",
+      "details": {
+        "account_role": "standard_user",
+        "device_known": true,
+        "location_known": true
+      }
+    },
+    {
+      "event_id": "EVT-018",
+      "timestamp": "2026-08-28T15:24:00Z",
+      "event_type": "privilege",
+      "source": "endpoint-agent",
+      "host": "workstation-42",
+      "user": "emma",
+      "source_ip": "10.20.30.44",
+      "action": "privilege_escalation",
+      "status": "success",
+      "severity": "high",
+      "details": {
+        "previous_role": "standard_user",
+        "new_role": "local_administrator",
+        "authorization": "not_approved"
+      }
+    },
+    {
+      "event_id": "EVT-019",
+      "timestamp": "2026-08-28T15:26:00Z",
+      "event_type": "privilege",
+      "source": "endpoint-agent",
+      "host": "workstation-42",
+      "user": "emma",
+      "source_ip": "10.20.30.44",
+      "action": "privileged_action",
+      "status": "success",
+      "severity": "high",
+      "details": {
+        "action_target": "security_configuration",
+        "authorization": "not_approved"
+      }
+    }
+  ]
+}
