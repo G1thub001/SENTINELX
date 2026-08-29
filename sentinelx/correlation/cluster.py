@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from sentinelx.models import InvestigationCase
+
 from sentinelx.correlation.graph import EvidenceGraph
 
 

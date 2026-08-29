@@ -6,8 +6,13 @@ class EvidenceGraph:
     """In-memory graph of relationships between security events."""
     
 
-    def __init__(self, links: list[EvidenceLink] | None = None):
+    def __init__(
+        self,
+        links: list[EvidenceLink] | None = None,
+        event_ids: set[str] | None = None,
+    ):
         self.links = links or []
+        self.event_ids = event_ids or set()
 
     def add_link(self, link: EvidenceLink) -> None:
         self.links.append(link)
@@ -27,7 +32,7 @@ class EvidenceGraph:
 
     def connected_components(self) -> list[set[str]]:
         """Return groups of event IDs connected by evidence links."""
-        event_ids: set[str] = set()
+        event_ids = set(self.event_ids)
 
         for link in self.links:
             event_ids.add(link.source_event_id)
@@ -62,6 +67,16 @@ class EvidenceGraph:
 
 
 def build_evidence_graph(case: InvestigationCase) -> EvidenceGraph:
-    """Build an evidence graph from correlated case events."""
+    """Build an evidence graph from case events and correlations."""
+
     links = correlate_events(case)
-    return EvidenceGraph(links)
+
+    event_ids = {
+        event.event_id
+        for event in case.events
+    }
+
+    return EvidenceGraph(
+        links=links,
+        event_ids=event_ids,
+    )
