@@ -1,226 +1,764 @@
-# SentinelX Evaluation Plan
+\# SentinelX Evaluation Plan
 
-## 1. Problem
 
-Security incident investigation often requires an analyst to correlate events across
-authentication, network, endpoint, process, and privilege telemetry.
 
-The goal of SentinelX is to investigate these events and produce an evidence-backed
-assessment that helps a security analyst determine:
+\## 1. Problem
 
-- whether an incident is occurring;
-- what type of incident it may be;
-- which observations support the conclusion;
-- what uncertainty remains; and
-- what should be investigated next.
+
+
+Security incident investigation often requires an analyst to correlate events
+
+across authentication, network, endpoint, process, and privilege telemetry.
+
+
+
+The goal of SentinelX is to investigate these events and produce an
+
+evidence-backed assessment that helps a security analyst determine:
+
+
+
+\- whether an incident is occurring;
+
+\- what type of incident it may be;
+
+\- which observations support the conclusion;
+
+\- what uncertainty remains; and
+
+\- what should be investigated next.
+
+
 
 SentinelX does not autonomously execute consequential security actions.
 
----
 
-## 2. Intended User
 
-The intended user is a SOC/security analyst investigating a security alert or
-collection of related security events.
+\---
 
----
 
-## 3. Core Bottleneck
+
+\## 2. Intended User
+
+
+
+The intended user is a SOC or security analyst investigating a security alert
+
+or collection of related security events.
+
+
+
+\---
+
+
+
+\## 3. Core Bottleneck
+
+
 
 The primary bottleneck is cross-event reasoning.
 
+
+
 Individual security events can be ambiguous or benign in isolation. A useful
-investigation system must distinguish isolated anomalies from meaningful patterns
-while avoiding unsupported conclusions.
 
----
+investigation system must distinguish isolated anomalies from meaningful
 
-## 4. Baseline
+patterns while avoiding unsupported conclusions.
 
-The baseline will be a single general-purpose language-model agent.
 
-The baseline receives the same incident case presented to SentinelX and is asked to:
 
-1. determine whether the case represents a security incident;
-2. identify the incident category;
-3. identify supporting evidence;
-4. state its confidence; and
-5. recommend the next investigation step.
+SentinelX addresses this bottleneck by constructing evidence relationships,
 
-The baseline will not have the specialized investigation workflow used by SentinelX.
+grouping related events into clusters, deriving higher-level signals, and
 
----
+performing structured assessment.
 
-## 5. SentinelX
 
-SentinelX will use an agentic investigation workflow designed around observed
-baseline failure modes.
 
-Potential capabilities include:
+\---
 
-- incident triage;
-- event/context analysis;
-- cross-event correlation;
-- evidence verification;
-- structured investigation reporting.
 
-Components will only be added when an evaluation demonstrates a specific limitation
-that the component is intended to address.
 
----
+\## 4. Baseline
 
-## 6. Evaluation Dataset
 
-The initial evaluation set will contain 15 fixed incident cases.
 
-The dataset will contain a mixture of:
+A simple event-level heuristic baseline was implemented.
 
-- benign activity;
-- suspicious but inconclusive activity;
-- confirmed incidents;
-- ambiguous cases;
-- multi-stage incidents; and
-- adversarial or misleading cases.
 
-The ground truth for every case will be established before running the baseline
-or SentinelX.
 
-The same cases will be used for both systems.
+The baseline evaluates individual events using:
 
----
 
-## 7. Case Design Principles
 
-Cases should test reasoning rather than simple keyword matching.
+\- event severity;
 
-Cases should include situations where:
+\- suspicious actions;
 
-- a single event appears malicious but is benign in context;
-- several individually weak signals combine into a meaningful incident;
-- telemetry sources disagree;
-- important evidence is missing;
-- legitimate administrative activity resembles an attack;
-- multiple stages of an attack must be correlated;
-- the correct conclusion is uncertainty rather than a definitive classification.
+\- suspicious process names; and
 
-Each case should have a documented failure mode that it is capable of exposing.
+\- suspicious command-line terms.
 
----
 
-## 8. Ground Truth
 
-Each case will define:
+The baseline intentionally does not perform the specialized cross-event
 
-- expected incident determination;
-- expected incident category;
-- required supporting evidence;
-- evidence that should not be treated as sufficient by itself;
-- expected confidence/uncertainty;
-- appropriate next investigation step.
+correlation used by SentinelX.
 
-Ground truth will be created independently of model outputs.
 
----
 
-## 9. Primary Metric
+The baseline therefore provides a reproducible comparison point for measuring
 
-Primary metric:
+the effect of the SentinelX investigation workflow.
 
-**Evidence-Supported Investigation Accuracy**
 
-Each case will receive a predefined score based on whether the system:
 
-1. correctly determines the incident status;
-2. correctly identifies the incident category;
-3. identifies the key supporting evidence; and
-4. avoids unsupported conclusions.
+\---
 
-The scoring criteria will be fixed before model evaluation.
 
----
 
-## 10. Secondary Metrics
+\## 5. SentinelX
 
-Additional measurements will include:
 
-- false-positive rate;
-- unsupported-claim rate;
-- evidence completeness;
-- investigation runtime;
-- approximate cost per investigation.
 
----
+SentinelX uses an agentic investigation workflow built around specialized
 
-## 11. Evaluation Protocol
+security investigation tools.
 
-For every case:
 
-1. Present the case to the baseline.
-2. Record the complete baseline output.
-3. Score the baseline using the predefined rubric.
-4. Present the identical case to SentinelX.
-5. Record the complete SentinelX output and agent trajectory.
-6. Score SentinelX using the same rubric.
-7. Compare results.
 
-No evaluation case will be removed because a system performs poorly on it.
+The workflow consists of:
 
----
 
-## 12. Improvement Strategy
 
-SentinelX will be developed iteratively.
+1\. case inspection;
 
-Each meaningful iteration must document:
+2\. evidence correlation;
 
-1. observed baseline or system failure;
-2. hypothesis about the cause;
-3. engineering change;
-4. evaluation result;
-5. decision to keep, modify, or remove the change.
+3\. evidence clustering;
 
-The final system should demonstrate a measurable improvement over the baseline.
+4\. signal derivation;
 
----
+5\. deterministic assessment;
 
-## 13. Success Criterion
+6\. LLM-assisted investigation and structured reasoning; and
 
-SentinelX should demonstrate a meaningful improvement in evidence-supported
-investigation accuracy over the baseline while maintaining acceptable runtime,
-cost, and reliability.
+7\. independent verification.
 
-Success must be demonstrated using recorded evaluation results rather than
-subjective claims.
 
----
 
-## 14. Safety Boundary
+The LLM is used as an investigation and reasoning layer.
+
+
+
+The deterministic SentinelX assessment remains authoritative and prevents the
+
+LLM from overriding the evidence-based classification.
+
+
+
+\---
+
+
+
+\## 6. Evaluation Dataset
+
+
+
+The evaluation set contains 15 fixed security investigation cases.
+
+
+
+The cases include:
+
+
+
+\- benign activity;
+
+\- suspicious but inconclusive activity;
+
+\- confirmed incidents;
+
+\- ambiguous cases;
+
+\- multi-stage incidents; and
+
+\- cases containing misleading or incomplete context.
+
+
+
+The same fixed cases are evaluated using the baseline and SentinelX.
+
+
+
+Ground truth is stored independently in:
+
+
+
+```text
+
+data/ground\_truth/
+
+
+
+The corresponding investigation cases are stored in:
+
+
+
+data/cases/
+
+7\. Case Design Principles
+
+
+
+Cases are designed to test reasoning rather than simple keyword matching.
+
+
+
+The dataset includes situations where:
+
+
+
+a single event appears suspicious but is benign in context;
+
+several individually weak signals combine into a meaningful incident;
+
+telemetry is incomplete;
+
+legitimate administrative or VPN activity resembles an attack;
+
+multiple stages of an attack must be correlated;
+
+authentication activity requires contextual interpretation;
+
+process and network telemetry must be connected; and
+
+the correct conclusion is uncertainty rather than unsupported certainty.
+
+
+
+Each case contains a documented failure mode.
+
+
+
+8\. Ground Truth
+
+
+
+Each ground-truth case defines:
+
+
+
+expected incident determination;
+
+expected incident category;
+
+required supporting evidence;
+
+required evidence event IDs;
+
+forbidden conclusions;
+
+expected confidence;
+
+expected next investigation step; and
+
+the failure mode being evaluated.
+
+
+
+Ground truth is created independently of model outputs.
+
+
+
+9\. Primary Metric
+
+
+
+The primary metric is:
+
+
+
+Evidence-Supported Investigation Accuracy
+
+
+
+Each case receives a predefined score based on whether the system:
+
+
+
+correctly determines the incident status;
+
+correctly identifies the incident category;
+
+identifies the required supporting evidence;
+
+reports the expected confidence;
+
+recommends the expected next step; and
+
+avoids unsupported conclusions.
+
+
+
+The scoring rubric awards a maximum of 100 points per case.
+
+
+
+10\. Secondary Metrics
+
+
+
+Additional measurements include:
+
+
+
+false-positive behavior;
+
+unsupported-claim behavior;
+
+evidence completeness;
+
+investigation runtime;
+
+agent verification status; and
+
+approximate LLM cost.
+
+
+
+These measurements provide additional context beyond the primary accuracy
+
+score.
+
+
+
+11\. Evaluation Protocol
+
+
+
+For the deterministic comparison:
+
+
+
+Present each fixed case to the baseline.
+
+Record the baseline result.
+
+Score the baseline using the predefined rubric.
+
+Present the identical case to SentinelX.
+
+Record the SentinelX result.
+
+Score SentinelX using the same rubric.
+
+Compare the results.
+
+
+
+For agent investigations:
+
+
+
+The agent receives the case.
+
+The agent invokes specialized investigation tools.
+
+Tool results are recorded in the trajectory.
+
+The agent produces a structured proposal.
+
+The proposal is compared with the authoritative deterministic assessment.
+
+Verification status is recorded in the trajectory.
+
+
+
+No evaluation case is removed because a system performs poorly on it.
+
+
+
+12\. Baseline Results
+
+
+
+The simple event-level baseline produced the following scores:
+
+
+
+Case	Score
+
+C01	85.0
+
+C02	25.0
+
+C03	85.0
+
+C04	65.0
+
+C05	85.0
+
+C06	20.0
+
+C07	40.0
+
+C08	40.0
+
+C09	50.0
+
+C10	50.0
+
+C11	50.0
+
+C12	50.0
+
+C13	50.0
+
+C14	40.0
+
+C15	40.0
+
+
+
+The baseline average was:
+
+
+
+48.3/100
+
+
+
+13\. SentinelX Results
+
+
+
+The final deterministic SentinelX evaluation produced:
+
+
+
+C01=100.0
+
+C02=100.0
+
+C03=100.0
+
+C04=100.0
+
+C05=100.0
+
+C06=100.0
+
+C07=100.0
+
+C08=100.0
+
+C09=100.0
+
+C10=100.0
+
+C11=100.0
+
+C12=100.0
+
+C13=100.0
+
+C14=100.0
+
+C15=100.0
+
+
+
+Average: 100.0
+
+
+
+The complete automated test suite also passes:
+
+
+
+41 passed
+
+14\. Measured Improvement
+
+
+
+The SentinelX score improved from:
+
+
+
+Baseline:  48.3/100
+
+SentinelX: 100.0/100
+
+
+
+Absolute improvement:
+
+
+
++51.7 percentage points
+
+
+
+Relative improvement over the baseline:
+
+
+
+approximately 106.9%
+
+
+
+The improvement demonstrates the value of moving from independent
+
+event-level heuristics toward evidence correlation and structured investigation.
+
+
+
+15\. Agent Trajectory Evidence
+
+
+
+The LLM-powered investigation agent records observable investigation
+
+trajectories.
+
+
+
+Validated representative trajectories currently include:
+
+
+
+traces/C09\_agent.json
+
+traces/C12\_agent.json
+
+traces/C14\_agent.json
+
+traces/C15\_agent.json
+
+
+
+The traces record:
+
+
+
+tool calls;
+
+tool results;
+
+evidence correlation;
+
+derived signals;
+
+deterministic assessment;
+
+final model output; and
+
+verification.
+
+
+
+The trajectories provide evidence that the agent uses the SentinelX
+
+investigation workflow rather than relying solely on a direct model response.
+
+
+
+16\. Verification Strategy
+
+
+
+The LLM is not treated as the authoritative source of the security decision.
+
+
+
+The deterministic SentinelX assessment provides the authoritative:
+
+
+
+outcome;
+
+classification;
+
+confidence;
+
+next step; and
+
+evidence cluster.
+
+
+
+The verification layer checks the LLM proposal against this assessment.
+
+
+
+A proposal that disagrees with the authoritative assessment is not accepted
+
+as a verified result.
+
+
+
+This design reduces the risk of unsupported or hallucinated security
+
+conclusions.
+
+
+
+17\. Iterative Improvement
+
+
+
+SentinelX was developed iteratively around observed failure modes.
+
+
+
+Examples include:
+
+
+
+Context blindness
+
+
+
+A VPN-related impossible-travel signal required correlation with approved VPN
+
+context.
+
+
+
+Process and network correlation failure
+
+
+
+Malicious PowerShell activity required connecting the encoded PowerShell
+
+execution with its suspicious parent process and subsequent malicious network
+
+activity.
+
+
+
+Multi-host correlation failure
+
+
+
+Lateral movement required connecting authentication and network activity across
+
+multiple hosts and linking it to unauthorized privileged activity.
+
+
+
+Temporal correlation failure
+
+
+
+Phishing-driven account takeover required connecting phishing delivery, user
+
+interaction, credential use, and subsequent takeover activity.
+
+
+
+These failure modes informed the specialized signals and investigation logic.
+
+
+
+18\. Uncertainty
+
+
+
+SentinelX explicitly supports insufficient evidence.
+
+
+
+Where telemetry is missing or contradictory, the system does not force a
+
+definitive benign or malicious classification.
+
+
+
+For example, C14 results in:
+
+
+
+Outcome: insufficient\_evidence
+
+Classification: potential\_credential\_compromise
+
+Confidence: low
+
+Next step: collect\_telemetry
+
+
+
+Similarly, C15 remains unresolved because legitimate VPN context explains part
+
+of the authentication sequence while subsequent activity remains unexplained.
+
+
+
+19\. Safety Boundary
+
+
 
 SentinelX is an investigation and decision-support system.
 
-It will not autonomously:
 
-- disable accounts;
-- terminate processes;
-- isolate endpoints;
-- modify firewall rules;
-- delete data; or
-- perform other consequential security actions.
 
-Recommended actions remain subject to human analyst review.
+It does not autonomously:
 
----
 
-## 15. Reproducibility
 
-A clean environment should be able to:
+disable accounts;
 
-1. install the required dependencies;
-2. load the evaluation cases;
-3. execute the baseline;
-4. execute SentinelX;
-5. run the scoring process; and
-6. reproduce the reported comparison.
+terminate processes;
 
-All important dependencies, commands, configurations, and evaluation assumptions
-are be documented.
+isolate endpoints;
+
+modify firewall rules;
+
+delete data; or
+
+execute other consequential security actions.
+
+
+
+Recommended actions such as contain remain subject to human analyst review.
+
+
+
+20\. Reproducibility
+
+
+
+The deterministic evaluation can be reproduced with:
+
+
+
+python -m pytest
+
+python -m baseline.run\_baseline
+
+python -m evaluation.run\_sentinelx
+
+
+
+The LLM-powered agent can be demonstrated with:
+
+
+
+python -m evaluation.run\_agent
+
+
+
+An OpenAI API key is required only for the LLM-powered agent.
+
+
+
+The project includes the evaluation cases, ground truth, scoring logic,
+
+automated tests, source code, and representative agent trajectories required
+
+to reproduce the reported results.
+

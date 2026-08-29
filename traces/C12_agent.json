@@ -1,0 +1,214 @@
+{
+  "case_id": "C12",
+  "agent": "SentinelX Security Investigation Agent",
+  "model": "gpt-5.6-luna",
+  "started_at": "2026-08-29T18:41:29.007697+00:00",
+  "steps": [
+    {
+      "step": 0,
+      "type": "tool_call",
+      "tool": "inspect_case",
+      "arguments": {}
+    },
+    {
+      "step": 0,
+      "type": "tool_result",
+      "tool": "inspect_case",
+      "result": {
+        "case_id": "C12",
+        "description": "A phishing event is followed by credential use from an unusual source and subsequent account takeover activity.",
+        "event_count": 4,
+        "events": [
+          {
+            "event_id": "EVT-030",
+            "timestamp": "2026-08-28T19:01:00+00:00",
+            "event_type": "network",
+            "host": "mail-gateway-01",
+            "user": "iris",
+            "action": "phishing_email_delivered",
+            "status": "success",
+            "severity": "high",
+            "process_name": null,
+            "parent_process": null
+          },
+          {
+            "event_id": "EVT-031",
+            "timestamp": "2026-08-28T19:04:00+00:00",
+            "event_type": "endpoint",
+            "host": "workstation-71",
+            "user": "iris",
+            "action": "user_link_interaction",
+            "status": "observed",
+            "severity": "high",
+            "process_name": null,
+            "parent_process": null
+          },
+          {
+            "event_id": "EVT-032",
+            "timestamp": "2026-08-28T19:08:00+00:00",
+            "event_type": "authentication",
+            "host": "idp-01",
+            "user": "iris",
+            "action": "credential_use",
+            "status": "success",
+            "severity": "high",
+            "process_name": null,
+            "parent_process": null
+          },
+          {
+            "event_id": "EVT-033",
+            "timestamp": "2026-08-28T19:10:00+00:00",
+            "event_type": "privilege",
+            "host": "idp-01",
+            "user": "iris",
+            "action": "account_takeover",
+            "status": "success",
+            "severity": "critical",
+            "process_name": null,
+            "parent_process": null
+          }
+        ]
+      }
+    },
+    {
+      "step": 1,
+      "type": "tool_call",
+      "tool": "correlate_evidence",
+      "arguments": {}
+    },
+    {
+      "step": 1,
+      "type": "tool_result",
+      "tool": "correlate_evidence",
+      "result": {
+        "case_id": "C12",
+        "cluster_count": 1,
+        "clusters": [
+          {
+            "event_ids": [
+              "EVT-030",
+              "EVT-031",
+              "EVT-032",
+              "EVT-033"
+            ],
+            "users": [
+              "iris"
+            ],
+            "hosts": [
+              "idp-01",
+              "mail-gateway-01",
+              "workstation-71"
+            ],
+            "event_types": [
+              "authentication",
+              "endpoint",
+              "network",
+              "privilege"
+            ],
+            "start_time": "2026-08-28T19:01:00+00:00",
+            "end_time": "2026-08-28T19:10:00+00:00",
+            "event_count": 4
+          }
+        ]
+      }
+    },
+    {
+      "step": 2,
+      "type": "tool_call",
+      "tool": "derive_case_signals",
+      "arguments": {
+        "cluster_index": 0
+      }
+    },
+    {
+      "step": 2,
+      "type": "tool_result",
+      "tool": "derive_case_signals",
+      "result": {
+        "case_id": "C12",
+        "cluster_index": 0,
+        "event_ids": [
+          "EVT-030",
+          "EVT-031",
+          "EVT-032",
+          "EVT-033"
+        ],
+        "signals": {
+          "multi_host": true,
+          "multi_stage": true,
+          "rapid_sequence": true,
+          "privilege_activity": true,
+          "authentication_activity": true,
+          "network_activity": true,
+          "unauthorized_activity": true,
+          "malicious_execution": false,
+          "persistence_activity": false,
+          "known_context": false,
+          "authorized_activity": false,
+          "suspicious_context": true,
+          "telemetry_gap": false,
+          "contradictory_context": false,
+          "benign_context": false,
+          "legitimate_explanation": false,
+          "authentication_anomaly": false,
+          "incomplete_process_context": false,
+          "authorized_security_scanning": false,
+          "credential_compromise_pattern": false,
+          "privilege_escalation_pattern": false,
+          "potential_credential_compromise": false,
+          "unresolved_authentication_anomaly": false,
+          "benign_vpn_activity": false,
+          "malicious_powershell_execution": false,
+          "lateral_movement_pattern": false,
+          "phishing_account_takeover_pattern": true
+        }
+      }
+    },
+    {
+      "step": 3,
+      "type": "tool_call",
+      "tool": "assess_case_cluster",
+      "arguments": {
+        "cluster_index": 0
+      }
+    },
+    {
+      "step": 3,
+      "type": "tool_result",
+      "tool": "assess_case_cluster",
+      "result": {
+        "case_id": "C12",
+        "cluster_index": 0,
+        "event_ids": [
+          "EVT-030",
+          "EVT-031",
+          "EVT-032",
+          "EVT-033"
+        ],
+        "assessment": {
+          "outcome": "confirmed_incident",
+          "classification": "phishing_account_takeover",
+          "confidence": "high",
+          "next_step": "contain",
+          "rationale": "The evidence cluster shows malicious phishing delivery followed by user interaction, credential use from an unrecognized source, and unauthorized account takeover."
+        }
+      }
+    },
+    {
+      "type": "final_model_output",
+      "output": "{\n  \"outcome\": \"confirmed_incident\",\n  \"classification\": \"phishing_account_takeover\",\n  \"confidence\": \"high\",\n  \"evidence_event_ids\": [\n    \"EVT-030\",\n    \"EVT-031\",\n    \"EVT-032\",\n    \"EVT-033\"\n  ],\n  \"reasoning\": \"A phishing email was delivered to iris (EVT-030), followed by user interaction with the link (EVT-031), successful credential use (EVT-032), and successful account takeover activity (EVT-033) within nine minutes. SentinelX correlated these events as a phishing account-takeover pattern with unauthorized activity and no legitimate contextual explanation.\",\n  \"next_step\": \"contain\"\n}"
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "reason": "LLM proposal matches the authoritative SentinelX assessment.",
+    "authoritative_assessment": {
+      "outcome": "confirmed_incident",
+      "classification": "phishing_account_takeover",
+      "confidence": "high",
+      "next_step": "contain",
+      "rationale": "The evidence cluster shows malicious phishing delivery followed by user interaction, credential use from an unrecognized source, and unauthorized account takeover."
+    }
+  },
+  "finished_at": "2026-08-29T18:41:40.425130+00:00"
+}

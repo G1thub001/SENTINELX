@@ -1,0 +1,196 @@
+{
+  "case_id": "C09",
+  "agent": "SentinelX Security Investigation Agent",
+  "model": "gpt-5.6-luna",
+  "started_at": "2026-08-29T18:44:56.362607+00:00",
+  "steps": [
+    {
+      "step": 0,
+      "type": "tool_call",
+      "tool": "inspect_case",
+      "arguments": {}
+    },
+    {
+      "step": 0,
+      "type": "tool_result",
+      "tool": "inspect_case",
+      "result": {
+        "case_id": "C09",
+        "description": "Malicious PowerShell execution is correlated with suspicious outbound network activity from the same endpoint.",
+        "event_count": 3,
+        "events": [
+          {
+            "event_id": "EVT-020",
+            "timestamp": "2026-08-28T16:02:00+00:00",
+            "event_type": "process",
+            "host": "workstation-55",
+            "user": "frank",
+            "action": "process_execution",
+            "status": "success",
+            "severity": "high",
+            "process_name": "powershell.exe",
+            "parent_process": "winword.exe"
+          },
+          {
+            "event_id": "EVT-021",
+            "timestamp": "2026-08-28T16:02:08+00:00",
+            "event_type": "network",
+            "host": "workstation-55",
+            "user": "frank",
+            "action": "outbound_connection",
+            "status": "success",
+            "severity": "high",
+            "process_name": null,
+            "parent_process": null
+          },
+          {
+            "event_id": "EVT-022",
+            "timestamp": "2026-08-28T16:02:10+00:00",
+            "event_type": "endpoint",
+            "host": "workstation-55",
+            "user": "frank",
+            "action": "child_process_network_activity",
+            "status": "observed",
+            "severity": "high",
+            "process_name": "powershell.exe",
+            "parent_process": "winword.exe"
+          }
+        ]
+      }
+    },
+    {
+      "step": 1,
+      "type": "tool_call",
+      "tool": "correlate_evidence",
+      "arguments": {}
+    },
+    {
+      "step": 1,
+      "type": "tool_result",
+      "tool": "correlate_evidence",
+      "result": {
+        "case_id": "C09",
+        "cluster_count": 1,
+        "clusters": [
+          {
+            "event_ids": [
+              "EVT-020",
+              "EVT-021",
+              "EVT-022"
+            ],
+            "users": [
+              "frank"
+            ],
+            "hosts": [
+              "workstation-55"
+            ],
+            "event_types": [
+              "endpoint",
+              "network",
+              "process"
+            ],
+            "start_time": "2026-08-28T16:02:00+00:00",
+            "end_time": "2026-08-28T16:02:10+00:00",
+            "event_count": 3
+          }
+        ]
+      }
+    },
+    {
+      "step": 2,
+      "type": "tool_call",
+      "tool": "derive_case_signals",
+      "arguments": {
+        "cluster_index": 0
+      }
+    },
+    {
+      "step": 2,
+      "type": "tool_result",
+      "tool": "derive_case_signals",
+      "result": {
+        "case_id": "C09",
+        "cluster_index": 0,
+        "event_ids": [
+          "EVT-020",
+          "EVT-021",
+          "EVT-022"
+        ],
+        "signals": {
+          "multi_host": false,
+          "multi_stage": true,
+          "rapid_sequence": true,
+          "privilege_activity": false,
+          "authentication_activity": false,
+          "network_activity": true,
+          "unauthorized_activity": false,
+          "malicious_execution": true,
+          "persistence_activity": false,
+          "known_context": false,
+          "authorized_activity": false,
+          "suspicious_context": false,
+          "telemetry_gap": false,
+          "contradictory_context": false,
+          "benign_context": false,
+          "legitimate_explanation": false,
+          "authentication_anomaly": false,
+          "incomplete_process_context": false,
+          "authorized_security_scanning": false,
+          "credential_compromise_pattern": false,
+          "privilege_escalation_pattern": false,
+          "potential_credential_compromise": false,
+          "unresolved_authentication_anomaly": false,
+          "benign_vpn_activity": false,
+          "malicious_powershell_execution": true,
+          "lateral_movement_pattern": false,
+          "phishing_account_takeover_pattern": false
+        }
+      }
+    },
+    {
+      "step": 3,
+      "type": "tool_call",
+      "tool": "assess_case_cluster",
+      "arguments": {
+        "cluster_index": 0
+      }
+    },
+    {
+      "step": 3,
+      "type": "tool_result",
+      "tool": "assess_case_cluster",
+      "result": {
+        "case_id": "C09",
+        "cluster_index": 0,
+        "event_ids": [
+          "EVT-020",
+          "EVT-021",
+          "EVT-022"
+        ],
+        "assessment": {
+          "outcome": "confirmed_incident",
+          "classification": "malicious_powershell_execution",
+          "confidence": "high",
+          "next_step": "contain",
+          "rationale": "PowerShell execution with an encoded command and suspicious parent process is corroborated by malicious network activity and an explicit process-network relationship."
+        }
+      }
+    },
+    {
+      "type": "final_model_output",
+      "output": "{\n  \"outcome\": \"confirmed_incident\",\n  \"classification\": \"malicious_powershell_execution\",\n  \"confidence\": \"high\",\n  \"evidence_event_ids\": [\n    \"EVT-020\",\n    \"EVT-021\",\n    \"EVT-022\"\n  ],\n  \"reasoning\": \"PowerShell execution from winword.exe on workstation-55 under user frank, including an encoded command, was followed within seconds by suspicious outbound network activity. The explicit process-network relationship corroborates malicious execution.\",\n  \"next_step\": \"contain\"\n}"
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "reason": "LLM proposal matches the authoritative SentinelX assessment.",
+    "authoritative_assessment": {
+      "outcome": "confirmed_incident",
+      "classification": "malicious_powershell_execution",
+      "confidence": "high",
+      "next_step": "contain",
+      "rationale": "PowerShell execution with an encoded command and suspicious parent process is corroborated by malicious network activity and an explicit process-network relationship."
+    }
+  },
+  "finished_at": "2026-08-29T18:45:11.335962+00:00"
+}

@@ -1,0 +1,197 @@
+{
+  "case_id": "C14",
+  "agent": "SentinelX Security Investigation Agent",
+  "model": "gpt-5.6-luna",
+  "started_at": "2026-08-29T18:45:43.565005+00:00",
+  "steps": [
+    {
+      "step": 0,
+      "type": "tool_call",
+      "tool": "inspect_case",
+      "arguments": {}
+    },
+    {
+      "step": 0,
+      "type": "tool_result",
+      "tool": "inspect_case",
+      "result": {
+        "case_id": "C14",
+        "description": "A potentially compromised account shows suspicious authentication activity, but critical endpoint telemetry is unavailable.",
+        "event_count": 3,
+        "events": [
+          {
+            "event_id": "EVT-040",
+            "timestamp": "2026-08-28T21:02:00+00:00",
+            "event_type": "authentication",
+            "host": "idp-01",
+            "user": "kate",
+            "action": "successful_login",
+            "status": "success",
+            "severity": "high",
+            "process_name": null,
+            "parent_process": null
+          },
+          {
+            "event_id": "EVT-041",
+            "timestamp": "2026-08-28T21:04:00+00:00",
+            "event_type": "authentication",
+            "host": "vpn-gateway-04",
+            "user": "kate",
+            "action": "successful_login",
+            "status": "success",
+            "severity": "high",
+            "process_name": null,
+            "parent_process": null
+          },
+          {
+            "event_id": "EVT-042",
+            "timestamp": "2026-08-28T21:05:00+00:00",
+            "event_type": "endpoint",
+            "host": "workstation-92",
+            "user": "kate",
+            "action": "telemetry_gap",
+            "status": "unavailable",
+            "severity": "high",
+            "process_name": null,
+            "parent_process": null
+          }
+        ]
+      }
+    },
+    {
+      "step": 1,
+      "type": "tool_call",
+      "tool": "correlate_evidence",
+      "arguments": {}
+    },
+    {
+      "step": 1,
+      "type": "tool_result",
+      "tool": "correlate_evidence",
+      "result": {
+        "case_id": "C14",
+        "cluster_count": 1,
+        "clusters": [
+          {
+            "event_ids": [
+              "EVT-040",
+              "EVT-041",
+              "EVT-042"
+            ],
+            "users": [
+              "kate"
+            ],
+            "hosts": [
+              "idp-01",
+              "vpn-gateway-04",
+              "workstation-92"
+            ],
+            "event_types": [
+              "authentication",
+              "endpoint"
+            ],
+            "start_time": "2026-08-28T21:02:00+00:00",
+            "end_time": "2026-08-28T21:05:00+00:00",
+            "event_count": 3
+          }
+        ]
+      }
+    },
+    {
+      "step": 2,
+      "type": "tool_call",
+      "tool": "derive_case_signals",
+      "arguments": {
+        "cluster_index": 0
+      }
+    },
+    {
+      "step": 2,
+      "type": "tool_result",
+      "tool": "derive_case_signals",
+      "result": {
+        "case_id": "C14",
+        "cluster_index": 0,
+        "event_ids": [
+          "EVT-040",
+          "EVT-041",
+          "EVT-042"
+        ],
+        "signals": {
+          "multi_host": true,
+          "multi_stage": false,
+          "rapid_sequence": true,
+          "privilege_activity": false,
+          "authentication_activity": true,
+          "network_activity": false,
+          "unauthorized_activity": false,
+          "malicious_execution": false,
+          "persistence_activity": false,
+          "known_context": false,
+          "authorized_activity": false,
+          "suspicious_context": true,
+          "telemetry_gap": true,
+          "contradictory_context": false,
+          "benign_context": false,
+          "legitimate_explanation": false,
+          "authentication_anomaly": false,
+          "incomplete_process_context": false,
+          "authorized_security_scanning": false,
+          "credential_compromise_pattern": false,
+          "privilege_escalation_pattern": false,
+          "potential_credential_compromise": true,
+          "unresolved_authentication_anomaly": false,
+          "benign_vpn_activity": false,
+          "malicious_powershell_execution": false,
+          "lateral_movement_pattern": false,
+          "phishing_account_takeover_pattern": false
+        }
+      }
+    },
+    {
+      "step": 2,
+      "type": "tool_call",
+      "tool": "assess_case_cluster",
+      "arguments": {
+        "cluster_index": 0
+      }
+    },
+    {
+      "step": 2,
+      "type": "tool_result",
+      "tool": "assess_case_cluster",
+      "result": {
+        "case_id": "C14",
+        "cluster_index": 0,
+        "event_ids": [
+          "EVT-040",
+          "EVT-041",
+          "EVT-042"
+        ],
+        "assessment": {
+          "outcome": "insufficient_evidence",
+          "classification": "potential_credential_compromise",
+          "confidence": "low",
+          "next_step": "collect_telemetry",
+          "rationale": "High-risk authentication activity suggests potential credential compromise, but critical endpoint telemetry is unavailable to confirm post-authentication activity."
+        }
+      }
+    },
+    {
+      "type": "final_model_output",
+      "output": "{\n  \"outcome\": \"insufficient_evidence\",\n  \"classification\": \"potential_credential_compromise\",\n  \"confidence\": \"low\",\n  \"evidence_event_ids\": [\n    \"EVT-040\",\n    \"EVT-041\",\n    \"EVT-042\"\n  ],\n  \"reasoning\": \"Successful authentication for user kate occurred on idp-01 at 21:02 and vpn-gateway-04 at 21:04, followed by unavailable endpoint telemetry on workstation-92 at 21:05. This rapid multi-host sequence suggests potential credential compromise, but the endpoint telemetry gap prevents confirmation of post-authentication activity.\",\n  \"next_step\": \"collect_telemetry\"\n}"
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "reason": "LLM proposal matches the authoritative SentinelX assessment.",
+    "authoritative_assessment": {
+      "outcome": "insufficient_evidence",
+      "classification": "potential_credential_compromise",
+      "confidence": "low",
+      "next_step": "collect_telemetry",
+      "rationale": "High-risk authentication activity suggests potential credential compromise, but critical endpoint telemetry is unavailable to confirm post-authentication activity."
+    }
+  },
+  "finished_at": "2026-08-29T18:45:54.001410+00:00"
+}
