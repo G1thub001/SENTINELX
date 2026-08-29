@@ -18,6 +18,14 @@ class EvidenceLink:
         self.link_type = link_type
         self.strength = strength
 
+def get_destination_host(event: SecurityEvent) -> str | None:
+    """Extract the destination host from normalized event details."""
+    destination_host = event.details.get("destination_host")
+
+    if isinstance(destination_host, str):
+        return destination_host
+
+    return None
 
 def correlate_events(
     case: InvestigationCase,
@@ -48,6 +56,17 @@ def correlate_events(
                             source.event_id,
                             target.event_id,
                             LinkType.SAME_HOST,
+                        )
+                    )
+            destination_host = get_destination_host(source)
+
+            if destination_host == target.host:
+                if source.host and source.host != target.host:
+                    links.append(
+                        EvidenceLink(
+                            source.event_id,
+                            target.event_id,
+                            LinkType.HOST_TRANSITION,
                         )
                     )
 
