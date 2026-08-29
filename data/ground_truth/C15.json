@@ -1,0 +1,40 @@
+{
+  "case_id": "C15",
+  "expected_outcome": "insufficient_evidence",
+  "expected_category": "unresolved_authentication_anomaly",
+  "expected_confidence": "low",
+  "scenario": "Authentication telemetry initially appears anomalous, but a corporate VPN explains one unusual source while a separate outbound connection remains unexplained.",
+  "required_evidence": [
+    "An authentication appears to originate from an unfamiliar location.",
+    "Corporate VPN telemetry provides a legitimate explanation for that location.",
+    "A separate successful authentication occurs from the employee's known environment.",
+    "An outbound connection to an unknown destination remains unexplained.",
+    "The available evidence does not establish whether the unresolved connection is benign or malicious."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-043",
+    "EVT-044",
+    "EVT-045",
+    "EVT-046"
+  ],
+  "supporting_events": [
+    "EVT-043",
+    "EVT-044",
+    "EVT-045",
+    "EVT-046"
+  ],
+  "forbidden_conclusions": [
+    "Do not classify the unusual authentication as malicious after the corporate VPN explanation is established.",
+    "Do not classify the entire case as benign while the unexplained outbound connection remains unresolved.",
+    "Do not claim the unknown destination is malicious without supporting evidence.",
+    "Do not ignore contradictory telemetry when determining confidence."
+  ],
+  "expected_next_step": "collect_telemetry",
+  "failure_mode": "evidence reconciliation failure",
+  "scoring_notes": {
+    "correct_outcome": "The system should classify the case as ambiguous because the available evidence supports both legitimate explanations and an unresolved anomaly.",
+    "evidence_requirement": "The system should reconcile the VPN explanation with the known workstation activity while identifying the unexplained outbound connection.",
+    "uncertainty_requirement": "Low confidence is appropriate because the unresolved network activity prevents a definitive conclusion.",
+    "unsupported_claim_penalty": "The system should not label the unknown destination malicious or dismiss it as benign without additional evidence."
+  }
+}

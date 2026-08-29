@@ -1,0 +1,60 @@
+{
+  "case_id": "C14",
+  "description": "A potentially compromised account shows suspicious authentication activity, but critical endpoint telemetry is unavailable.",
+  "events": [
+    {
+      "event_id": "EVT-040",
+      "timestamp": "2026-08-28T21:02:00Z",
+      "event_type": "authentication",
+      "source": "identity-provider",
+      "host": "idp-01",
+      "user": "kate",
+      "source_ip": "203.0.113.200",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "high",
+      "details": {
+        "device_known": false,
+        "location_known": false,
+        "risk_signal": "high",
+        "impossible_travel": true
+      }
+    },
+    {
+      "event_id": "EVT-041",
+      "timestamp": "2026-08-28T21:04:00Z",
+      "event_type": "authentication",
+      "source": "auth-server-01",
+      "host": "vpn-gateway-04",
+      "user": "kate",
+      "source_ip": "203.0.113.200",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "high",
+      "details": {
+        "device_known": false,
+        "location_known": false,
+        "vpn_connection": true
+      }
+    },
+    {
+      "event_id": "EVT-042",
+      "timestamp": "2026-08-28T21:05:00Z",
+      "event_type": "endpoint",
+      "source": "endpoint-agent",
+      "host": "workstation-92",
+      "user": "kate",
+      "source_ip": "10.20.90.92",
+      "action": "telemetry_gap",
+      "status": "unavailable",
+      "severity": "high",
+      "details": {
+        "telemetry_source": "endpoint-agent",
+        "reason": "agent_offline",
+        "last_seen": "2026-08-28T20:41:00Z"
+      }
+    }
+  ]
+}

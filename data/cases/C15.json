@@ -1,0 +1,81 @@
+{
+  "case_id": "C15",
+  "description": "Contradictory authentication telemetry contains legitimate explanations for several signals while one anomaly remains unresolved.",
+  "events": [
+    {
+      "event_id": "EVT-043",
+      "timestamp": "2026-08-28T22:01:00Z",
+      "event_type": "authentication",
+      "source": "identity-provider",
+      "host": "idp-01",
+      "user": "lisa",
+      "source_ip": "198.51.100.44",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "medium",
+      "details": {
+        "device_known": false,
+        "location_known": false,
+        "location": "Mombasa",
+        "risk_signal": "medium"
+      }
+    },
+    {
+      "event_id": "EVT-044",
+      "timestamp": "2026-08-28T22:02:00Z",
+      "event_type": "network",
+      "source": "vpn-gateway",
+      "host": "vpn-gateway-05",
+      "user": "lisa",
+      "source_ip": "198.51.100.44",
+      "action": "vpn_connection",
+      "status": "success",
+      "severity": "low",
+      "details": {
+        "corporate_vpn": true,
+        "known_vpn_provider": true,
+        "location_explanation": "Corporate VPN egress"
+      }
+    },
+    {
+      "event_id": "EVT-045",
+      "timestamp": "2026-08-28T22:03:00Z",
+      "event_type": "authentication",
+      "source": "identity-provider",
+      "host": "idp-01",
+      "user": "lisa",
+      "source_ip": "10.20.100.44",
+      "action": "successful_login",
+      "status": "success",
+      "authentication_method": "password",
+      "severity": "low",
+      "details": {
+        "device_known": true,
+        "location_known": true,
+        "location": "Nairobi",
+        "normal_working_hours": true
+      }
+    },
+    {
+      "event_id": "EVT-046",
+      "timestamp": "2026-08-28T22:05:00Z",
+      "event_type": "network",
+      "source": "network-monitor",
+      "host": "workstation-101",
+      "user": "lisa",
+      "source_ip": "10.20.100.44",
+      "destination_ip": "203.0.113.240",
+      "destination_domain": "unknown-service.example",
+      "action": "outbound_connection",
+      "status": "success",
+      "severity": "medium",
+      "details": {
+        "reputation": "unknown",
+        "destination_known": false,
+        "approved": null,
+        "business_justification": null
+      }
+    }
+  ]
+}

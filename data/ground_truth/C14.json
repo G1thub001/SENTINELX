@@ -1,0 +1,38 @@
+{
+  "case_id": "C14",
+  "expected_outcome": "insufficient_evidence",
+  "expected_category": "potential_credential_compromise",
+  "expected_confidence": "low",
+  "scenario": "A high-risk authentication from an unrecognized source suggests potential credential compromise, but endpoint telemetry is unavailable and therefore the compromise cannot be confirmed.",
+  "required_evidence": [
+    "A successful authentication occurs from an unrecognized device or location.",
+    "The authentication carries a high-risk signal.",
+    "Impossible-travel is detected.",
+    "A second successful authentication occurs through the same suspicious source.",
+    "Endpoint telemetry required to determine post-authentication activity is unavailable."
+  ],
+  "required_evidence_event_ids": [
+    "EVT-040",
+    "EVT-041",
+    "EVT-042"
+  ],
+  "supporting_events": [
+    "EVT-040",
+    "EVT-041",
+    "EVT-042"
+  ],
+  "forbidden_conclusions": [
+    "Do not confirm account compromise without endpoint or other corroborating evidence.",
+    "Do not invent endpoint activity that is not present in the telemetry.",
+    "Do not treat the telemetry gap as evidence that no malicious activity occurred.",
+    "Do not assign high confidence when critical evidence is unavailable."
+  ],
+  "expected_next_step": "collect_telemetry",
+  "failure_mode": "hallucinated certainty",
+  "scoring_notes": {
+    "correct_outcome": "The system should recognize potential compromise but classify the case as insufficient evidence rather than a confirmed incident.",
+    "evidence_requirement": "The system should identify the suspicious authentication signals and explicitly recognize the endpoint telemetry gap.",
+    "uncertainty_requirement": "Low confidence is required because critical post-authentication telemetry is unavailable.",
+    "unsupported_claim_penalty": "Claims about endpoint compromise, malware execution, persistence, or other unseen activity should be penalized."
+  }
+}
