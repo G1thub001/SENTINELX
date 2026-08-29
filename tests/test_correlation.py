@@ -4,6 +4,7 @@ from evaluation.loader import load_case
 from sentinelx.correlation.engine import correlate_events
 from sentinelx.correlation.links import LinkType
 from sentinelx.correlation.graph import build_evidence_graph
+from sentinelx.correlation.cluster import build_clusters
 
 
 
@@ -135,3 +136,31 @@ def test_c13_events_form_connected_evidence_component():
         }.issubset(component)
         for component in components
     )
+
+def test_c13_builds_evidence_cluster():
+    case = load_case(
+        PROJECT_ROOT / "data" / "cases" / "C13.json"
+    )
+
+    graph = build_evidence_graph(case)
+    clusters = build_clusters(case, graph)
+
+    assert len(clusters) == 1
+
+    cluster = clusters[0]
+
+    assert cluster.event_count == 6
+    assert cluster.users == {"jack"}
+    assert len(cluster.hosts) == 4
+
+def test_c13_cluster_has_correct_time_span():
+    case = load_case(
+        PROJECT_ROOT / "data" / "cases" / "C13.json"
+    )
+
+    graph = build_evidence_graph(case)
+    clusters = build_clusters(case, graph)
+
+    cluster = clusters[0]
+
+    assert cluster.duration_seconds == 14 * 60
