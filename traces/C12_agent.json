@@ -2,7 +2,7 @@
   "case_id": "C12",
   "agent": "SentinelX Security Investigation Agent",
   "model": "gpt-5.6-luna",
-  "started_at": "2026-08-29T18:41:29.007697+00:00",
+  "started_at": "2026-08-29T19:42:21.959342+00:00",
   "steps": [
     {
       "step": 0,
@@ -165,7 +165,7 @@
       }
     },
     {
-      "step": 3,
+      "step": 2,
       "type": "tool_call",
       "tool": "assess_case_cluster",
       "arguments": {
@@ -173,7 +173,7 @@
       }
     },
     {
-      "step": 3,
+      "step": 2,
       "type": "tool_result",
       "tool": "assess_case_cluster",
       "result": {
@@ -196,19 +196,25 @@
     },
     {
       "type": "final_model_output",
-      "output": "{\n  \"outcome\": \"confirmed_incident\",\n  \"classification\": \"phishing_account_takeover\",\n  \"confidence\": \"high\",\n  \"evidence_event_ids\": [\n    \"EVT-030\",\n    \"EVT-031\",\n    \"EVT-032\",\n    \"EVT-033\"\n  ],\n  \"reasoning\": \"A phishing email was delivered to iris (EVT-030), followed by user interaction with the link (EVT-031), successful credential use (EVT-032), and successful account takeover activity (EVT-033) within nine minutes. SentinelX correlated these events as a phishing account-takeover pattern with unauthorized activity and no legitimate contextual explanation.\",\n  \"next_step\": \"contain\"\n}"
+      "output": "{\n  \"outcome\": \"confirmed_incident\",\n  \"classification\": \"phishing_account_takeover\",\n  \"confidence\": \"high\",\n  \"evidence_event_ids\": [\n    \"EVT-030\",\n    \"EVT-031\",\n    \"EVT-032\",\n    \"EVT-033\"\n  ],\n  \"reasoning\": \"The evidence shows phishing email delivery, user link interaction three minutes later, successful credential use four minutes after that, and a successful account takeover two minutes later. SentinelX identified this as a rapid, multi-stage phishing account takeover sequence with unauthorized activity.\",\n  \"next_step\": \"contain\"\n}"
     }
   ],
   "verification": {
     "verified": true,
-    "reason": "LLM proposal matches the authoritative SentinelX assessment.",
+    "reason": "LLM proposal matches the authoritative SentinelX assessment and cites valid evidence.",
     "authoritative_assessment": {
       "outcome": "confirmed_incident",
       "classification": "phishing_account_takeover",
       "confidence": "high",
       "next_step": "contain",
       "rationale": "The evidence cluster shows malicious phishing delivery followed by user interaction, credential use from an unrecognized source, and unauthorized account takeover."
-    }
+    },
+    "verified_evidence_event_ids": [
+      "EVT-030",
+      "EVT-031",
+      "EVT-032",
+      "EVT-033"
+    ]
   },
-  "finished_at": "2026-08-29T18:41:40.425130+00:00"
+  "finished_at": "2026-08-29T19:42:35.969288+00:00"
 }

@@ -918,3 +918,52 @@ The objective is to give the analyst a more evidence-grounded investigation
 
 starting point.
 
+## Improvement Changelog
+
+SentinelX was developed iteratively by identifying specific investigation
+failure modes and adding targeted engineering improvements.
+
+| Baseline Failure | Engineering Change | Evaluation Evidence | Result |
+|---|---|---|---|
+| Events were evaluated largely in isolation | Added evidence graph and event clustering | 15-case evaluation | Cross-event relationships became available to the investigation workflow |
+| Suspicious activity could be misinterpreted without context | Added contextual and uncertainty-aware security signals | C01-C08 evaluation cases | Improved contextual classification |
+| Process and network evidence could be analyzed independently | Added process-network correlation | C09 | Correctly identified malicious PowerShell execution |
+| Multi-host activity could be treated as isolated authentication events | Added host-sequence and multi-host correlation | C10 | Correctly identified lateral movement |
+| Phishing, credential use, and takeover activity could be treated independently | Added temporal phishing/account-takeover correlation | C12 | Correctly identified phishing-driven account takeover |
+| Missing endpoint telemetry could encourage unsupported conclusions | Added telemetry-gap and insufficient-evidence handling | C14 | Preserved uncertainty and requested additional telemetry |
+| Legitimate VPN context could be confused with malicious authentication | Added contextual interpretation of legitimate activity | C15 | Preserved legitimate context while keeping unresolved activity visible |
+| An LLM could produce an unsupported security decision | Added specialized investigation tools, deterministic assessment, and independent verification | Agent trajectories C09/C12/C14/C15 | Agent proposals are checked against authoritative SentinelX assessments |
+
+### Measured Progress
+
+The final evaluation uses the same fixed 15 cases and scoring methodology as the
+baseline comparison.
+
+```text
+Baseline:  48.3/100
+SentinelX: 100.0/100
+Improvement: +51.7 percentage points
+
+The deterministic SentinelX system achieved 100.0/100 across all 15 evaluation
+cases, while the simple event-level baseline achieved 48.3/100.
+
+Main Failure Mode
+
+The dominant failure mode was treating security events as isolated observations
+instead of reasoning over their relationships, sequence, context, and missing
+telemetry.
+
+The improvement came from making those relationships explicit through evidence
+correlation, clustering, specialized signals, deterministic assessment, and
+verification.
+
+Hot Take
+
+LLMs are most useful in security investigation when they are constrained by
+deterministic tools, structured evidence, schema enforcement, and independent
+verification. The model should help reason over evidence—not invent the
+security decision.
+
+
+
+

@@ -252,3 +252,10 @@ SentinelX/
 └── traces/
 
 The architecture, evaluation methodology, source code, tests, and agent trajectories are maintained as separate reproducible project artifacts.
+
+### Estimated API Cost
+
+The deterministic SentinelX evaluation does not require an LLM API call.
+
+The LLM-powered agent is expected to cost approximately **$0.05 per agent
+investigation run**, depending on token consumption and model usage.
