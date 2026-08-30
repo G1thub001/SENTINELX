@@ -1,6 +1,11 @@
 \# SentinelX
 
 
+## Solution Video
+
+[Watch the SentinelX Solution Demo on Loom](https://www.loom.com/share/4a78f241d5d24dec968648dc0703a8b9)
+
+
 
 \## Evidence-Driven Security Investigation Agent
 
@@ -963,6 +968,9 @@ LLMs are most useful in security investigation when they are constrained by
 deterministic tools, structured evidence, schema enforcement, and independent
 verification. The model should help reason over evidence—not invent the
 security decision.
+
+
+
 
 
 
