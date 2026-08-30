@@ -2,7 +2,7 @@
   "case_id": "C12",
   "agent": "SentinelX Security Investigation Agent",
   "model": "gpt-5.6-luna",
-  "started_at": "2026-08-29T19:42:21.959342+00:00",
+  "started_at": "2026-08-30T12:42:04.492066+00:00",
   "steps": [
     {
       "step": 0,
@@ -165,7 +165,7 @@
       }
     },
     {
-      "step": 2,
+      "step": 3,
       "type": "tool_call",
       "tool": "assess_case_cluster",
       "arguments": {
@@ -173,7 +173,7 @@
       }
     },
     {
-      "step": 2,
+      "step": 3,
       "type": "tool_result",
       "tool": "assess_case_cluster",
       "result": {
@@ -196,7 +196,7 @@
     },
     {
       "type": "final_model_output",
-      "output": "{\n  \"outcome\": \"confirmed_incident\",\n  \"classification\": \"phishing_account_takeover\",\n  \"confidence\": \"high\",\n  \"evidence_event_ids\": [\n    \"EVT-030\",\n    \"EVT-031\",\n    \"EVT-032\",\n    \"EVT-033\"\n  ],\n  \"reasoning\": \"The evidence shows phishing email delivery, user link interaction three minutes later, successful credential use four minutes after that, and a successful account takeover two minutes later. SentinelX identified this as a rapid, multi-stage phishing account takeover sequence with unauthorized activity.\",\n  \"next_step\": \"contain\"\n}"
+      "output": "{\n  \"outcome\": \"confirmed_incident\",\n  \"classification\": \"phishing_account_takeover\",\n  \"confidence\": \"high\",\n  \"evidence_event_ids\": [\n    \"EVT-030\",\n    \"EVT-031\",\n    \"EVT-032\",\n    \"EVT-033\"\n  ],\n  \"reasoning\": \"The correlated sequence over nine minutes shows phishing email delivery, user link interaction, successful credential use, and subsequent successful account takeover for user iris. SentinelX identified this as a phishing-account-takeover pattern with unauthorized activity and no legitimate or contradictory context.\",\n  \"next_step\": \"contain\"\n}"
     }
   ],
   "verification": {
@@ -216,5 +216,5 @@
       "EVT-033"
     ]
   },
-  "finished_at": "2026-08-29T19:42:35.969288+00:00"
+  "finished_at": "2026-08-30T12:42:19.454994+00:00"
 }
